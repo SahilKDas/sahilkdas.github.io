@@ -1,6 +1,6 @@
 # Sahil K. Das — Portfolio
 
-A Nuxt 4 portfolio for software engineer and systems architect Sahil K. Das.
+A Nuxt 4 portfolio for me!
 
 ## Development
 
