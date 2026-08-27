@@ -137,10 +137,10 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
         </header>
 
         <div class="identity" id="top">
-          <p class="eyebrow"><span>Systems engineer</span><b>×</b><span>Language builder</span></p>
+          <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
           <p class="role">Software Engineer &amp;<br>Systems Architect</p>
-          <p class="intro">I work close to the machine—building rendering engines, language runtimes, and infrastructure that turns ambitious ideas into fast, dependable systems.</p>
+          <p class="intro">I don’t stay in one lane. My GitHub is an active R&amp;D lab: languages, engines, games, infrastructure, and ambitious experiments built to answer “what if?”</p>
 
           <div class="profile-actions">
             <a class="primary-action" href="https://github.com/SahilKDas" target="_blank" rel="noopener">
@@ -153,6 +153,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
               <svg v-else viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
             </button>
           </div>
+
+          <p class="build-cadence">“Sometimes I ship in a day; sometimes I disappear into a month-long build. Every repository is a laboratory.”</p>
         </div>
 
         <div class="stack-block">

@@ -42,6 +42,8 @@ button { color: inherit; }
 .identity h1 em { color: transparent; -webkit-text-stroke: 1px rgba(244, 247, 251, .52); font-style: normal; }
 .role { margin: 29px 0 22px; color: #d4dce6; font: 500 clamp(17px, 1.55vw, 23px)/1.35 var(--display); letter-spacing: -.025em; }
 .intro { margin: 0; max-width: 490px; color: var(--grey); font-size: 13px; line-height: 1.75; }
+.build-cadence { position: relative; margin: 21px 0 0; max-width: 490px; padding: 0 0 0 14px; color: #68778a; font: 400 8px/1.65 var(--mono); letter-spacing: .01em; }
+.build-cadence::before { content: ''; position: absolute; inset: 2px auto 2px 0; width: 1px; background: linear-gradient(var(--cyan), rgba(0, 242, 254, .08)); }
 .profile-actions { margin-top: 31px; display: flex; flex-wrap: wrap; gap: 10px; }
 .primary-action, .handle-button { min-height: 43px; display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; font: 600 10px var(--mono); letter-spacing: .04em; transition: transform .25s ease, background .25s ease, border-color .25s ease; }
 .primary-action { padding: 0 17px; gap: 23px; color: var(--ink); background: var(--cyan); }
@@ -196,6 +198,7 @@ button { color: inherit; }
   .identity h1 { font-size: clamp(59px, 20vw, 86px); }
   .role { font-size: 18px; }
   .intro { font-size: 12px; }
+  .build-cadence { font-size: 8px; }
   .coordinates { display: none; }
   .main-nav { justify-content: space-between; gap: 10px; padding: 0 18px; }
   .main-nav a { font-size: 8px; }.main-nav .github-nav { margin-left: 0; }
