@@ -1,4 +1,43 @@
 <script setup lang="ts">
+const blueShades = ['#0077b6', '#0096c7', '#00b4d8', '#3a86ff', '#4361ee', '#4cc9f0', '#023e8a']
+
+const vBlueWords = {
+  mounted(element: HTMLElement) {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement
+        if (!node.textContent?.trim() || parent?.closest('[data-no-blue], .hover-word, script, style')) {
+          return NodeFilter.FILTER_REJECT
+        }
+        return NodeFilter.FILTER_ACCEPT
+      }
+    })
+
+    const nodes: Text[] = []
+    while (walker.nextNode()) nodes.push(walker.currentNode as Text)
+
+    for (const node of nodes) {
+      const fragment = document.createDocumentFragment()
+      for (const token of (node.textContent || '').split(/(\s+)/)) {
+        if (!token || /^\s+$/.test(token)) {
+          fragment.append(token)
+          continue
+        }
+
+        const word = document.createElement('span')
+        word.className = 'hover-word'
+        word.textContent = token
+        word.addEventListener('pointerenter', () => {
+          const shade = blueShades[Math.floor(Math.random() * blueShades.length)]
+          word.style.setProperty('--word-blue', shade)
+        })
+        fragment.append(word)
+      }
+      node.replaceWith(fragment)
+    }
+  }
+}
+
 type Project = {
   name: string
   extension?: string
@@ -218,7 +257,7 @@ onBeforeUnmount(() => {
 
     <aside class="profile-pane">
       <div class="grid-noise" aria-hidden="true" />
-      <div class="profile-content">
+      <div v-blue-words class="profile-content">
         <header class="site-id">
           <a href="#top" class="monogram" aria-label="Back to top">SKD<span>/01</span></a>
           <span class="availability"><i /> Open to building hard things</span>
@@ -235,7 +274,7 @@ onBeforeUnmount(() => {
               Explore GitHub
               <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M7 5h8v8" /></svg>
             </a>
-            <button class="handle-button" type="button" @click="copyHandle">
+            <button class="handle-button" data-no-blue type="button" @click="copyHandle">
               <span>{{ copied ? 'Copied' : '@SahilKDas' }}</span>
               <svg v-if="!copied" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="8" height="8" rx="1"/><path d="M5 12H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1"/></svg>
               <svg v-else viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
@@ -260,24 +299,24 @@ onBeforeUnmount(() => {
     </aside>
 
     <main class="work-pane">
-      <nav class="main-nav" aria-label="Page sections">
+      <nav v-blue-words class="main-nav" aria-label="Page sections">
         <a href="#work">Work</a>
         <a href="#research">Research</a>
         <a href="#about">About</a>
-        <button class="chaos-toggle" type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
+        <button class="chaos-toggle" data-no-blue type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
           <i /> {{ chaosMode ? 'Calm-ish' : 'Full bloom' }}
         </button>
         <a class="github-nav" href="https://github.com/SahilKDas" target="_blank" rel="noopener">GH ↗</a>
       </nav>
 
-      <div class="signal-tape" aria-live="polite">
+      <div class="signal-tape" data-no-blue aria-live="polite">
         <div>
           <span>ACTIVE THOUGHT_{{ String(activeIdea + 1).padStart(2, '0') }} — {{ ideaLoop[activeIdea] }}</span>
           <span aria-hidden="true">ACTIVE THOUGHT_{{ String(activeIdea + 1).padStart(2, '0') }} — {{ ideaLoop[activeIdea] }}</span>
         </div>
       </div>
 
-      <section class="main-intro" id="work">
+      <section v-blue-words class="main-intro" id="work">
         <p class="section-kicker"><span>01</span> Selected work</p>
         <div class="headline-row">
           <h2>Building below<br>the abstraction.</h2>
@@ -303,6 +342,7 @@ onBeforeUnmount(() => {
           :key="project.name"
           class="project-card"
           :class="{ featured: project.featured }"
+          v-blue-words
           @pointermove="tiltCard"
           @pointerleave="resetCard"
         >
@@ -354,7 +394,7 @@ onBeforeUnmount(() => {
         </article>
       </TransitionGroup>
 
-      <section class="repo-index" aria-labelledby="repo-index-title">
+      <section v-blue-words class="repo-index" aria-labelledby="repo-index-title">
         <div class="repo-index-head">
           <div>
             <p class="section-kicker"><span>01B</span> Repository index</p>
@@ -381,7 +421,7 @@ onBeforeUnmount(() => {
           </a>
         </div>
       </section>
-      <section class="research-section" id="research">
+      <section v-blue-words class="research-section" id="research">
         <p class="section-kicker"><span>02</span> Active research</p>
         <div class="research-heading">
           <h2>Questions worth<br>losing sleep over.</h2>
@@ -407,7 +447,7 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <section class="about-section" id="about">
+      <section v-blue-words class="about-section" id="about">
         <p class="section-kicker"><span>03</span> Profile</p>
         <div class="about-grid">
           <h2>Curious by default.<br><em>Precise by practice.</em></h2>
@@ -424,7 +464,7 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <footer class="main-footer">
+      <footer v-blue-words class="main-footer">
         <div><span>Have an impossible problem?</span><h2>Let’s architect it.</h2></div>
         <a href="https://github.com/SahilKDas" target="_blank" rel="noopener">Start on GitHub <span>↗</span></a>
         <p>© {{ new Date().getFullYear() }} Sahil K. Das <span>Built with Nuxt 4</span></p>
