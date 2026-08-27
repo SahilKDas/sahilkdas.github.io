@@ -17,6 +17,18 @@ type Filter = typeof filters[number]
 const activeFilter = ref<Filter>('all')
 const copied = ref(false)
 const scrollProgress = ref(0)
+const chaosMode = ref(true)
+const activeIdea = ref(0)
+const pointer = reactive({ x: -400, y: -400 })
+const bursts = ref<Array<{ id: number; x: number; y: number; glyph: string; tx: number; ty: number }>>([])
+const ideaLoop = [
+  'What if browsers rendered differently?',
+  'What if the language taught the machine?',
+  'What if one file generated a world?',
+  'What if the weird prototype actually worked?'
+]
+let ideaTimer: ReturnType<typeof window.setInterval> | undefined
+let burstId = 0
 
 const projects: Project[] = [
   {
@@ -110,6 +122,51 @@ const handleScroll = () => {
   scrollProgress.value = total > 0 ? window.scrollY / total : 0
 }
 
+const shellStyle = computed(() => ({
+  '--pointer-x': `${pointer.x}px`,
+  '--pointer-y': `${pointer.y}px`
+}))
+
+const handlePointerMove = (event: PointerEvent) => {
+  if (!chaosMode.value) return
+  pointer.x = event.clientX
+  pointer.y = event.clientY
+}
+
+const popBurst = (event: PointerEvent) => {
+  if (!chaosMode.value || event.button !== 0) return
+  const glyphs = ['✦', '◇', '01', '?!', '⌁', '♡']
+  const created = Array.from({ length: 5 }, (_, index) => ({
+    id: burstId++,
+    x: event.clientX,
+    y: event.clientY,
+    glyph: glyphs[(burstId + index) % glyphs.length],
+    tx: Math.round((Math.random() - .5) * 130),
+    ty: Math.round(-35 - Math.random() * 85)
+  }))
+  bursts.value.push(...created)
+  window.setTimeout(() => {
+    const ids = new Set(created.map(item => item.id))
+    bursts.value = bursts.value.filter(item => !ids.has(item.id))
+  }, 850)
+}
+
+const tiltCard = (event: PointerEvent) => {
+  if (!chaosMode.value || event.pointerType === 'touch') return
+  const card = event.currentTarget as HTMLElement
+  const bounds = card.getBoundingClientRect()
+  const rotateY = ((event.clientX - bounds.left) / bounds.width - .5) * 7
+  const rotateX = ((event.clientY - bounds.top) / bounds.height - .5) * -7
+  card.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`)
+  card.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`)
+}
+
+const resetCard = (event: PointerEvent) => {
+  const card = event.currentTarget as HTMLElement
+  card.style.setProperty('--tilt-x', '0deg')
+  card.style.setProperty('--tilt-y', '0deg')
+}
+
 const copyHandle = async () => {
   await navigator.clipboard.writeText('@SahilKDas')
   copied.value = true
@@ -119,14 +176,45 @@ const copyHandle = async () => {
 onMounted(() => {
   handleScroll()
   window.addEventListener('scroll', handleScroll, { passive: true })
+  ideaTimer = window.setInterval(() => {
+    if (chaosMode.value) activeIdea.value = (activeIdea.value + 1) % ideaLoop.length
+  }, 2300)
 })
 
-onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
+  if (ideaTimer) window.clearInterval(ideaTimer)
+})
 </script>
 
 <template>
-  <div class="portfolio-shell">
+  <div
+    class="portfolio-shell"
+    :class="{ 'chaos-on': chaosMode }"
+    :style="shellStyle"
+    @pointermove="handlePointerMove"
+    @pointerdown="popBurst"
+  >
     <div class="scroll-meter" :style="{ transform: `scaleX(${scrollProgress})` }" />
+    <div class="pointer-glow" aria-hidden="true" />
+    <div class="bloom-field" aria-hidden="true">
+      <i
+        v-for="petal in 18"
+        :key="petal"
+        :style="{
+          '--petal-left': `${(petal * 37) % 100}%`,
+          '--petal-delay': `${(petal % 9) * -1.3}s`,
+          '--petal-duration': `${7 + (petal % 6)}s`
+        }"
+      />
+    </div>
+    <span
+      v-for="burst in bursts"
+      :key="burst.id"
+      class="click-burst"
+      :style="{ left: `${burst.x}px`, top: `${burst.y}px`, '--burst-x': `${burst.tx}px`, '--burst-y': `${burst.ty}px` }"
+      aria-hidden="true"
+    >{{ burst.glyph }}</span>
 
     <aside class="profile-pane">
       <div class="grid-noise" aria-hidden="true" />
@@ -176,8 +264,18 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
         <a href="#work">Work</a>
         <a href="#research">Research</a>
         <a href="#about">About</a>
+        <button class="chaos-toggle" type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
+          <i /> {{ chaosMode ? 'Calm-ish' : 'Full bloom' }}
+        </button>
         <a class="github-nav" href="https://github.com/SahilKDas" target="_blank" rel="noopener">GH ↗</a>
       </nav>
+
+      <div class="signal-tape" aria-live="polite">
+        <div>
+          <span>ACTIVE THOUGHT_{{ String(activeIdea + 1).padStart(2, '0') }} — {{ ideaLoop[activeIdea] }}</span>
+          <span aria-hidden="true">ACTIVE THOUGHT_{{ String(activeIdea + 1).padStart(2, '0') }} — {{ ideaLoop[activeIdea] }}</span>
+        </div>
+      </div>
 
       <section class="main-intro" id="work">
         <p class="section-kicker"><span>01</span> Selected work</p>
@@ -205,6 +303,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
           :key="project.name"
           class="project-card"
           :class="{ featured: project.featured }"
+          @pointermove="tiltCard"
+          @pointerleave="resetCard"
         >
           <a class="card-link" :href="project.url" target="_blank" rel="noopener" :aria-label="`View ${project.name} on GitHub`">
             <div class="card-topline">
