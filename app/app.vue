@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const blueShades = ['#0077b6', '#0096c7', '#00b4d8', '#3a86ff', '#4361ee', '#4cc9f0', '#023e8a']
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+
+const blueShades = ['#38bdf8', '#60a5fa', '#22d3ee', '#93c5fd', '#818cf8', '#67e8f9', '#0ea5e9']
 
 const vBlueWords = {
   mounted(element: HTMLElement) {
@@ -228,7 +232,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="portfolio-shell"
+    class="site-root"
     :class="{ 'chaos-on': chaosMode }"
     :style="shellStyle"
     @pointermove="handlePointerMove"
@@ -255,15 +259,73 @@ onBeforeUnmount(() => {
       aria-hidden="true"
     >{{ burst.glyph }}</span>
 
+    <section id="launch" class="launch-hero">
+      <div class="launch-grid" aria-hidden="true" />
+      <div class="launch-orb launch-orb-one" aria-hidden="true" />
+      <div class="launch-orb launch-orb-two" aria-hidden="true" />
+
+      <header class="launch-bar">
+        <a href="#launch" class="launch-brand" aria-label="Sahil K. Das home">
+          <strong>SKD</strong><span>Systems lab / 2026</span>
+        </a>
+        <Badge variant="outline" class="launch-status">
+          <i /> Open-source research in progress
+        </Badge>
+      </header>
+
+      <div v-blue-words class="launch-copy">
+        <Badge variant="secondary" class="launch-eyebrow">Independent R&amp;D · Languages · Engines · Graphics</Badge>
+        <h1>Build the systems<br><em>behind the impossible.</em></h1>
+        <p>Sahil K. Das designs language runtimes, rendering engines, and strange experiments that begin with one useful question: <strong>what if?</strong></p>
+        <div class="launch-actions" data-no-blue>
+          <Button as="a" href="#portfolio" size="lg" class="launch-primary">
+            Explore the systems
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v14m0 0 6-6m-6 6-6-6" /></svg>
+          </Button>
+          <Button as="a" href="https://github.com/SahilKDas" target="_blank" rel="noopener" variant="outline" size="lg" class="launch-secondary">
+            GitHub archive <span>↗</span>
+          </Button>
+        </div>
+      </div>
+
+      <Card class="hero-console">
+        <CardHeader class="console-chrome">
+          <div class="console-dots"><i/><i/><i/></div>
+          <span>skd://research/system-map</span>
+          <Badge variant="outline">LIVE</Badge>
+        </CardHeader>
+        <CardContent class="console-content">
+          <div class="console-rail">
+            <span class="active">01 / ENGINE</span>
+            <span>02 / RUNTIME</span>
+            <span>03 / LANGUAGE</span>
+            <span>04 / WORLD</span>
+          </div>
+          <div class="console-stage">
+            <div class="stage-grid" />
+            <div class="system-node node-core"><b>T_CARET</b><small>RENDER CORE</small></div>
+            <div class="system-node node-data"><b>ROSECONDOR</b><small>TYPE-SAFE DATA</small></div>
+            <div class="system-node node-lang"><b>ALK</b><small>JIT RUNTIME</small></div>
+            <div class="system-path path-one"/><div class="system-path path-two"/>
+            <div class="stage-readout"><span>PIPELINE / HEALTHY</span><span>60.0 FPS</span><span>MEM 18.4 MB</span></div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <a href="#portfolio" class="launch-scroll"><span>Scroll to inspect</span><i /></a>
+    </section>
+
+    <div id="portfolio" class="portfolio-shell">
+
     <aside class="profile-pane">
       <div class="grid-noise" aria-hidden="true" />
       <div v-blue-words class="profile-content">
         <header class="site-id">
-          <a href="#top" class="monogram" aria-label="Back to top">SKD<span>/01</span></a>
+          <a href="#launch" class="monogram" aria-label="Back to launch hero">SKD<span>/01</span></a>
           <span class="availability"><i /> Open to building hard things</span>
         </header>
 
-        <div class="identity" id="top">
+        <div class="identity" id="profile">
           <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
           <p class="role">Software Engineer &amp;<br>Systems Architect</p>
@@ -304,7 +366,7 @@ onBeforeUnmount(() => {
         <a href="#research">Research</a>
         <a href="#about">About</a>
         <button class="chaos-toggle" data-no-blue type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
-          <i /> {{ chaosMode ? 'Calm-ish' : 'Full bloom' }}
+          <i /> {{ chaosMode ? 'Low power' : 'Full signal' }}
         </button>
         <a class="github-nav" href="https://github.com/SahilKDas" target="_blank" rel="noopener">GH ↗</a>
       </nav>
@@ -470,5 +532,6 @@ onBeforeUnmount(() => {
         <p>© {{ new Date().getFullYear() }} Sahil K. Das <span>Built with Nuxt 4</span></p>
       </footer>
     </main>
+    </div>
   </div>
 </template>
