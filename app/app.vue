@@ -77,9 +77,9 @@ const projects: Project[] = [
   {
     name: 'T_Caret',
     extension: '.tc',
-    role: 'Lead developer',
-    description: 'A C++23 and Vulkan rendering engine exploring a high-performance alternative to conventional web layout renderers.',
-    details: ['GPU-accelerated rendering pipelines', 'Custom graphics and layout logic'],
+    role: 'My renderer rabbit hole',
+    description: 'I’m building a C++23 + Vulkan renderer to see how fast web-style layouts can get.',
+    details: ['I push the pixels through the GPU', 'I own the layout logic too'],
     tags: ['C++23', 'Vulkan', 'Rendering engine'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/T_Caret',
@@ -89,9 +89,9 @@ const projects: Project[] = [
   {
     name: 'RoseCondor',
     extension: '.rcdb',
-    role: 'Creator & lead architect',
-    description: 'A type-safe serialization standard and database engine built for TypeScript and Node.js environments.',
-    details: ['Declarative schema validation', 'Restrictive allowonly / disallow / block rules'],
+    role: 'I made the whole thing',
+    description: 'I made a type-safe serialization format and tiny database engine for TypeScript and Node.js.',
+    details: ['Schemas that read like normal code', 'Very picky allowonly / disallow / block rules'],
     tags: ['TypeScript', 'Node.js', 'Serialization'],
     category: 'engines',
     url: 'https://github.com/SahilKDas',
@@ -101,9 +101,9 @@ const projects: Project[] = [
   {
     name: 'RoseWind',
     extension: '.rw',
-    role: 'Language designer',
-    description: 'A text-based language designed to introduce students to programming with real structure and fewer training wheels.',
-    details: ['Education-first syntax', 'TypeScript implementation'],
+    role: 'A language I designed',
+    description: 'I made a text-based language for learning programming without hiding all the real structure.',
+    details: ['Friendly syntax, fewer training wheels', 'Built in TypeScript'],
     tags: ['Language design', 'TypeScript', 'Education'],
     category: 'languages',
     url: 'https://github.com/SahilKDas/RoseWind',
@@ -111,9 +111,9 @@ const projects: Project[] = [
   },
   {
     name: 'ALK',
-    role: 'Runtime engineer',
-    description: 'A dynamically typed, JIT-compiled programming language designed for the web.',
-    details: ['JIT compilation', 'Web runtime research'],
+    role: 'My JIT experiment',
+    description: 'I’m seeing what a dynamically typed, JIT-compiled language for the web can feel like.',
+    details: ['Yes, I wrote a JIT', 'A lot of web-runtime poking'],
     tags: ['C++', 'JIT', 'Language runtime'],
     category: 'languages',
     url: 'https://github.com/SahilKDas/ALK',
@@ -122,9 +122,9 @@ const projects: Project[] = [
   {
     name: 'Synthiscape',
     extension: '.py',
-    role: 'Graphics engineer',
-    description: 'A procedural terrain generator that creates massive explorable worlds with biomes, erosion, rivers, and responsive navigation.',
-    details: ['Procedural world simulation', 'Optimized visible-tile rendering'],
+    role: 'I grow fake worlds',
+    description: 'I generate huge explorable worlds with biomes, erosion, rivers, and navigation that stays snappy.',
+    details: ['Procedural world simulation', 'Only rendering what you can actually see'],
     tags: ['Python', 'Pygame', 'Procedural graphics'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/Synthiscape',
@@ -133,9 +133,9 @@ const projects: Project[] = [
   {
     name: 'Colubrid',
     extension: '.py',
-    role: 'Interpreter engineer',
-    description: 'A from-scratch Python interpreter implemented in C and C++ to examine the machinery beneath a familiar language.',
-    details: ['Parser and interpreter internals', 'C / C++ implementation'],
+    role: 'Python, from scratch',
+    description: 'I wrote a Python interpreter in C and C++ because apparently using Python normally was too easy.',
+    details: ['Parser and interpreter guts', 'C / C++, no magic curtain'],
     tags: ['C++', 'Interpreters', 'Python'],
     category: 'languages',
     url: 'https://github.com/SahilKDas/Colubrid',
@@ -144,16 +144,16 @@ const projects: Project[] = [
 ]
 
 const repositoryIndex = [
-  { name: 'Juliana', type: 'Language', language: 'Rust', description: 'A new language exploring a more deliberate answer to Julia’s trade-offs.', url: 'https://github.com/SahilKDas/Juliana' },
-  { name: '8j8k', type: 'Multiplayer', language: 'TypeScript', description: 'An open-source multiplayer Svelte game built for collaboration.', url: 'https://github.com/SahilKDas/8j8k' },
-  { name: 'Morlock', type: 'Chess engine', language: 'Go', description: 'A Go-based fork and study of the Morlock chess engine.', url: 'https://github.com/SahilKDas/morlock' },
-  { name: 'MSLASH', type: 'Interpreter', language: 'Python', description: 'A lightweight interpreter for an original programming language.', url: 'https://github.com/SahilKDas/MSLASH' },
-  { name: 'Flaky', type: 'Build week', language: 'TypeScript', description: 'An OpenAI Build Week 2026 project and product experiment.', url: 'https://github.com/SahilKDas/Flaky' },
-  { name: 'Unspool', type: 'Civic tech', language: 'CSS', description: 'A Hack for Humanity 2026 project focused on mental wellbeing.', url: 'https://github.com/SahilKDas/HfH26Submission' },
-  { name: 'NORA', type: 'Hackathon', language: 'JavaScript', description: 'A project built for United Hacks V7.', url: 'https://github.com/SahilKDas/NORA' },
-  { name: 'Swordbattle Tweaks', type: 'Game mods', language: 'TypeScript', description: 'An open GPL-3.0 collection documenting custom swordbattle.io mods.', url: 'https://github.com/SahilKDas/swordbattle-tweaks' },
-  { name: 'Lordhank2', type: 'Game systems', language: 'JavaScript', description: 'A multiplayer sword-fighting playground for rapid experiments.', url: 'https://github.com/SahilKDas/lordhank2-testing' },
-  { name: 'EagerGen3d', type: 'Procedural 3D', language: 'Research', description: 'An experiment in procedural 3D generation.', url: 'https://github.com/SahilKDas/EagerGen3d' }
+  { name: 'Juliana', type: 'Language', language: 'Rust', description: 'I’m testing what a language can learn from Julia—and what I’d change.', url: 'https://github.com/SahilKDas/Juliana' },
+  { name: '8j8k', type: 'Multiplayer', language: 'TypeScript', description: 'I built an open-source multiplayer Svelte game around collaboration.', url: 'https://github.com/SahilKDas/8j8k' },
+  { name: 'Morlock', type: 'Chess engine', language: 'Go', description: 'My Go fork for poking around inside a chess engine.', url: 'https://github.com/SahilKDas/morlock' },
+  { name: 'MSLASH', type: 'Interpreter', language: 'Python', description: 'A tiny interpreter for a language I made up.', url: 'https://github.com/SahilKDas/MSLASH' },
+  { name: 'Flaky', type: 'Build week', language: 'TypeScript', description: 'What I built during OpenAI Build Week 2026.', url: 'https://github.com/SahilKDas/Flaky' },
+  { name: 'Unspool', type: 'Civic tech', language: 'CSS', description: 'My Hack for Humanity 2026 project about mental wellbeing.', url: 'https://github.com/SahilKDas/HfH26Submission' },
+  { name: 'NORA', type: 'Hackathon', language: 'JavaScript', description: 'What I shipped for United Hacks V7.', url: 'https://github.com/SahilKDas/NORA' },
+  { name: 'Swordbattle Tweaks', type: 'Game mods', language: 'TypeScript', description: 'My open collection of custom swordbattle.io mods.', url: 'https://github.com/SahilKDas/swordbattle-tweaks' },
+  { name: 'Lordhank2', type: 'Game systems', language: 'JavaScript', description: 'My multiplayer sword-fighting playground for quick experiments.', url: 'https://github.com/SahilKDas/lordhank2-testing' },
+  { name: 'EagerGen3d', type: 'Procedural 3D', language: 'Research', description: 'Me asking how far procedural 3D can go.', url: 'https://github.com/SahilKDas/EagerGen3d' }
 ]
 const visibleProjects = computed(() => activeFilter.value === 'all'
   ? projects
@@ -266,24 +266,24 @@ onBeforeUnmount(() => {
 
       <header class="launch-bar">
         <a href="#launch" class="launch-brand" aria-label="Sahil K. Das home">
-          <strong>SKD</strong><span>Systems lab / 2026</span>
+          <strong>SKD</strong><span>My little systems lab / 2026</span>
         </a>
         <Badge variant="outline" class="launch-status">
-          <i /> Open-source research in progress
+          <i /> Open to work · probably building something
         </Badge>
       </header>
 
       <div v-blue-words class="launch-copy">
-        <Badge variant="secondary" class="launch-eyebrow">Independent R&amp;D · Languages · Engines · Graphics</Badge>
-        <h1>Build the systems<br><em>behind the impossible.</em></h1>
-        <p>Sahil K. Das designs language runtimes, rendering engines, and strange experiments that begin with one useful question: <strong>what if?</strong></p>
+        <Badge variant="secondary" class="launch-eyebrow">Languages · engines · graphics · weird ideas</Badge>
+        <h1>I build the systems<br><em>behind the impossible.</em></h1>
+        <p>I make runtimes, renderers, and whatever strange experiment starts with one useful question: <strong>what if?</strong></p>
         <div class="launch-actions" data-no-blue>
           <Button as="a" href="#portfolio" size="lg" class="launch-primary">
-            Explore the systems
+            See what I’m building
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v14m0 0 6-6m-6 6-6-6" /></svg>
           </Button>
           <Button as="a" href="https://github.com/SahilKDas" target="_blank" rel="noopener" variant="outline" size="lg" class="launch-secondary">
-            GitHub archive <span>↗</span>
+            Open my GitHub <span>↗</span>
           </Button>
         </div>
       </div>
@@ -312,7 +312,7 @@ onBeforeUnmount(() => {
         </CardContent>
       </Card>
 
-      <a href="#portfolio" class="launch-scroll"><span>Scroll to inspect</span><i /></a>
+      <a href="#portfolio" class="launch-scroll"><span>Scroll for the rabbit holes</span><i /></a>
     </section>
 
     <div id="portfolio" class="portfolio-shell">
@@ -322,14 +322,14 @@ onBeforeUnmount(() => {
       <div v-blue-words class="profile-content">
         <header class="site-id">
           <a href="#launch" class="monogram" aria-label="Back to launch hero">SKD<span>/01</span></a>
-          <span class="availability"><i /> Open to building hard things</span>
+          <span class="availability"><i /> Open to work. Busy building anyway.</span>
         </header>
 
         <div class="identity" id="profile">
           <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
-          <p class="role">Software Engineer &amp;<br>Systems Architect</p>
-          <p class="intro">I don’t stay in one lane. My GitHub is an active R&amp;D lab: languages, engines, games, infrastructure, and ambitious experiments built to answer “what if?”</p>
+          <p class="role">Software engineer &amp;<br>systems tinkerer</p>
+          <p class="intro">I don’t stick to one lane. My GitHub is basically a garage full of languages, engines, games, web stuff, and experiments that started with “what if?”</p>
 
           <div class="profile-actions">
             <a class="primary-action" href="https://github.com/SahilKDas" target="_blank" rel="noopener">
@@ -354,7 +354,7 @@ onBeforeUnmount(() => {
         </div>
 
         <footer class="profile-footer">
-          <span>Based on open-source work</span>
+          <span>The proof is on GitHub</span>
           <span class="coordinates">37° N / 122° W</span>
         </footer>
       </div>
@@ -362,9 +362,9 @@ onBeforeUnmount(() => {
 
     <main class="work-pane">
       <nav v-blue-words class="main-nav" aria-label="Page sections">
-        <a href="#work">Work</a>
-        <a href="#research">Research</a>
-        <a href="#about">About</a>
+        <a href="#work">Things I built</a>
+        <a href="#research">Rabbit holes</a>
+        <a href="#about">Me</a>
         <button class="chaos-toggle" data-no-blue type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
           <i /> {{ chaosMode ? 'Low power' : 'Full signal' }}
         </button>
@@ -379,10 +379,10 @@ onBeforeUnmount(() => {
       </div>
 
       <section v-blue-words class="main-intro" id="work">
-        <p class="section-kicker"><span>01</span> Selected work</p>
+        <p class="section-kicker"><span>01</span> Stuff I’ve built</p>
         <div class="headline-row">
-          <h2>Building below<br>the abstraction.</h2>
-          <p>Selected systems, engines, and language experiments—designed from first principles.</p>
+          <h2>I build below<br>the abstraction.</h2>
+          <p>Engines, languages, and other things I probably could’ve made the easy way.</p>
         </div>
 
         <div class="filter-row" aria-label="Filter projects">
@@ -459,11 +459,11 @@ onBeforeUnmount(() => {
       <section v-blue-words class="repo-index" aria-labelledby="repo-index-title">
         <div class="repo-index-head">
           <div>
-            <p class="section-kicker"><span>01B</span> Repository index</p>
-            <h2 id="repo-index-title">More in the lab.</h2>
+            <p class="section-kicker"><span>01B</span> GitHub detour</p>
+            <h2 id="repo-index-title">More rabbit holes.</h2>
           </div>
           <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">
-            <strong>29</strong><span>public repositories</span><i>View all ↗</i>
+            <strong>29</strong><span>public repos and counting</span><i>See the mess ↗</i>
           </a>
         </div>
 
@@ -484,51 +484,51 @@ onBeforeUnmount(() => {
         </div>
       </section>
       <section v-blue-words class="research-section" id="research">
-        <p class="section-kicker"><span>02</span> Active research</p>
+        <p class="section-kicker"><span>02</span> Things I can’t leave alone</p>
         <div class="research-heading">
-          <h2>Questions worth<br>losing sleep over.</h2>
-          <div class="signal"><i/><span>3 threads active</span></div>
+          <h2>Questions I keep<br>losing sleep over.</h2>
+          <div class="signal"><i/><span>3 rabbit holes open</span></div>
         </div>
 
         <div class="research-list">
           <article>
             <span class="research-number">R/01</span>
-            <div><h3>Web rendering, reimagined</h3><p>Exploring how modern GPU primitives can replace costly layers in browser-style layout and paint pipelines.</p></div>
-            <span class="research-tag">Graphics architecture</span>
+            <div><h3>What if browsers rendered differently?</h3><p>I’m seeing how much browser-style layout and painting I can shove straight onto a modern GPU.</p></div>
+            <span class="research-tag">GPU / browser guts</span>
           </article>
           <article>
             <span class="research-number">R/02</span>
-            <div><h3>Languages that teach systems</h3><p>Designing toolchains that stay approachable without hiding the concepts that make software actually work.</p></div>
-            <span class="research-tag">Language design</span>
+            <div><h3>Languages that don’t hide the good parts</h3><p>I want beginner-friendly tools that still show you what the computer is actually doing.</p></div>
+            <span class="research-tag">Making languages</span>
           </article>
           <article>
             <span class="research-number">R/03</span>
-            <div><h3>Student research, globally</h3><p>Building open communities where young developers can move from consuming technology to publishing serious work.</p></div>
-            <span class="research-tag">Community platforms</span>
+            <div><h3>Young builders doing real research</h3><p>I’m trying to make spaces where students can stop just consuming tech and start publishing their own work.</p></div>
+            <span class="research-tag">Builder communities</span>
           </article>
         </div>
       </section>
 
       <section v-blue-words class="about-section" id="about">
-        <p class="section-kicker"><span>03</span> Profile</p>
+        <p class="section-kicker"><span>03</span> A little about me</p>
         <div class="about-grid">
-          <h2>Curious by default.<br><em>Precise by practice.</em></h2>
+          <h2>Curious by default.<br><em>Way too into the details.</em></h2>
           <div class="about-copy">
-            <p>Sahil is a software developer with a foundation in Python and a growing body of work across low-level systems, web infrastructure, language tooling, and high-performance graphics.</p>
-            <p>He builds open-source software, leads student research initiatives, and likes the problems that only become interesting once the easy abstractions run out.</p>
+            <p>I started with Python, got curious about what was underneath it, and somehow ended up building runtimes, web plumbing, language tools, and graphics engines.</p>
+            <p>I’m currently open to work. Until the right thing shows up, I’ll be on GitHub turning “what if?” into another repository.</p>
           </div>
         </div>
         <div class="capabilities">
-          <div><span>01</span><p>Systems<br>engineering</p></div>
-          <div><span>02</span><p>Language<br>toolchains</p></div>
-          <div><span>03</span><p>Graphics<br>architecture</p></div>
-          <div><span>04</span><p>Open-source<br>leadership</p></div>
+          <div><span>01</span><p>Systems<br>stuff</p></div>
+          <div><span>02</span><p>Language<br>tools</p></div>
+          <div><span>03</span><p>Graphics<br>pipelines</p></div>
+          <div><span>04</span><p>Open-source<br>chaos</p></div>
         </div>
       </section>
 
       <footer v-blue-words class="main-footer">
-        <div><span>Have an impossible problem?</span><h2>Let’s architect it.</h2></div>
-        <a href="https://github.com/SahilKDas" target="_blank" rel="noopener">Start on GitHub <span>↗</span></a>
+        <div><span>Got a weird problem?</span><h2>Let’s make it real.</h2></div>
+        <a href="https://github.com/SahilKDas" target="_blank" rel="noopener">Find me on GitHub <span>↗</span></a>
         <p>© {{ new Date().getFullYear() }} Sahil K. Das <span>Built with Nuxt 4</span></p>
       </footer>
     </main>
