@@ -417,3 +417,79 @@ button { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .launch-scroll i::after, .launch-status i { animation: none !important; }
 }
+
+/* Scroll-reactive color sets and wave motion */
+.site-root { isolation: isolate; background: var(--ink); transition: background-color .16s linear; }
+.site-root > .launch-hero, .site-root > .portfolio-shell { position: relative; z-index: 2; }
+.scroll-meter { background: linear-gradient(90deg, var(--cyan), var(--theme-secondary)); box-shadow: 0 0 18px var(--theme-glow); }
+.pointer-glow { background: radial-gradient(circle, var(--theme-glow), transparent 68%); }
+
+.wave-field { position: fixed; z-index: 10; inset: 0; overflow: hidden; pointer-events: none; mix-blend-mode: screen; opacity: .3; }
+.wave-field svg { position: absolute; inset: -4% auto auto -210px; width: calc(100% + 660px); height: 108%; overflow: visible; transform: translate3d(var(--wave-shift), var(--wave-lift), 0); transition: transform .12s linear; }
+.wave-line { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; filter: drop-shadow(0 0 12px var(--theme-glow)); transform-box: fill-box; transform-origin: center; }
+.wave-line-a { stroke: var(--cyan); stroke-width: 2.4; opacity: .82; animation: wave-drift-a 9s ease-in-out infinite alternate; }
+.wave-line-b { stroke: var(--theme-secondary); stroke-width: 1.6; opacity: .58; animation: wave-drift-b 12s ease-in-out infinite alternate; }
+.wave-line-c { stroke: var(--cyan-soft); stroke-width: 1.1; opacity: .35; animation: wave-drift-a 15s ease-in-out infinite alternate-reverse; }
+.wave-line-d { stroke: var(--theme-secondary); stroke-width: 3; opacity: .22; animation: wave-drift-b 18s ease-in-out infinite alternate-reverse; }
+@keyframes wave-drift-a { from { transform: translate3d(-70px,-12px,0) scaleY(.92); } to { transform: translate3d(90px,18px,0) scaleY(1.08); } }
+@keyframes wave-drift-b { from { transform: translate3d(80px,20px,0) scaleY(1.08); } to { transform: translate3d(-100px,-18px,0) scaleY(.9); } }
+
+.hero-wave { position: absolute; z-index: 1; inset: auto 0 -1px; height: clamp(64px, 9vw, 120px); pointer-events: none; opacity: .88; }
+.hero-wave svg { width: 100%; height: 100%; display: block; }
+.hero-wave path { fill: var(--panel); transition: fill .16s linear; }
+
+.launch-hero { background: radial-gradient(circle at 48% 84%, color-mix(in srgb, var(--theme-secondary) 28%, transparent), transparent 35%), radial-gradient(circle at 86% 18%, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 27%), linear-gradient(150deg, var(--ink), var(--panel) 56%, var(--ink)); transition: background .16s linear; }
+.portfolio-shell { background: radial-gradient(circle at 76% 9%, color-mix(in srgb, var(--cyan) 13%, transparent), transparent 29%), var(--ink); }
+.profile-pane { background: var(--panel); border-color: var(--line); transition: background-color .16s linear; }
+.work-pane, .repo-index, .about-section { background: var(--ink); transition: background-color .16s linear; }
+.main-nav { background: color-mix(in srgb, var(--ink) 88%, transparent); border-color: var(--line); }
+
+.launch-grid, .stage-grid { background-image: linear-gradient(color-mix(in srgb, var(--cyan) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--theme-secondary) 14%, transparent) 1px, transparent 1px); }
+.launch-orb-one { border-color: color-mix(in srgb, var(--cyan) 25%, transparent); box-shadow: inset 0 0 100px color-mix(in srgb, var(--cyan) 12%, transparent); }
+.launch-orb-two { border-color: color-mix(in srgb, var(--theme-secondary) 22%, transparent); box-shadow: inset 0 0 140px color-mix(in srgb, var(--theme-secondary) 11%, transparent); }
+.launch-brand strong, .launch-primary { color: var(--ink) !important; background: var(--cyan) !important; box-shadow: 0 12px 42px var(--theme-glow) !important; }
+.launch-primary:hover { background: color-mix(in srgb, var(--cyan) 78%, white) !important; }
+.launch-brand span, .launch-copy > p, .launch-scroll, .console-chrome > span, .system-node small, .stage-readout { color: var(--grey); }
+.launch-status, .launch-eyebrow { color: var(--cyan-soft) !important; border-color: var(--line) !important; background: color-mix(in srgb, var(--panel) 68%, transparent) !important; }
+.launch-status i { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+.launch-copy h1 em, .console-chrome [data-slot="badge"], .stage-readout span:first-child { color: var(--cyan); }
+.launch-copy h1 em { text-shadow: 0 12px 55px var(--theme-glow); }
+.launch-secondary { border-color: var(--line) !important; background: color-mix(in srgb, var(--ink) 48%, transparent) !important; }
+.launch-secondary:hover { background: color-mix(in srgb, var(--surface-raised) 68%, transparent) !important; }
+.hero-console { border-color: var(--line) !important; background: color-mix(in srgb, var(--panel) 90%, transparent) !important; box-shadow: 0 -25px 100px var(--theme-glow), 0 30px 90px rgba(0,0,0,.35) !important; }
+.console-chrome, .console-rail { border-color: var(--line); }
+.console-dots i { background: var(--surface-raised); }.console-dots i:first-child { background: var(--cyan); }
+.console-rail span { color: var(--grey); }.console-rail span.active { color: var(--cyan-soft); background: color-mix(in srgb, var(--surface-raised) 72%, transparent); }
+.system-node { border-color: color-mix(in srgb, var(--cyan) 38%, transparent); background: color-mix(in srgb, var(--surface-card) 94%, transparent); }
+.system-path { background: linear-gradient(90deg, var(--cyan), color-mix(in srgb, var(--theme-secondary) 10%, transparent)); box-shadow: 0 0 10px var(--theme-glow); }
+.launch-scroll i { background: var(--surface-raised); }.launch-scroll i::after { background: var(--cyan); }
+
+.grid-noise { background-image: linear-gradient(color-mix(in srgb, var(--cyan-soft) 5%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--cyan-soft) 5%, transparent) 1px, transparent 1px); }
+.availability, .stack-label, .profile-footer, .build-cadence, .render-toolbar span, .render-tree, .terrain-readout, .terminal-lines .muted, .repo-index-head a span, .repo-index-head a i, .repo-number { color: var(--grey); }
+.intro, .headline-row > p, .card-copy > p, .repo-table p, .research-list p, .about-copy p, .main-nav a, .section-kicker, .filter-row button, .repo-type, .repo-language, .research-tag, .card-topline, .tags span { color: var(--grey); }
+.handle-button, .stack-pills span, .code-lines, .terminal-lines { color: var(--cyan-soft); border-color: var(--line); background: color-mix(in srgb, var(--surface-raised) 44%, transparent); }
+.signal-tape, .main-footer { color: var(--ink); background: linear-gradient(105deg, var(--cyan), var(--theme-secondary)); }
+.project-card { border-color: var(--line); background: color-mix(in srgb, var(--surface-card) 92%, transparent); box-shadow: 0 22px 70px color-mix(in srgb, var(--ink) 76%, transparent); }
+.project-card:hover { border-color: color-mix(in srgb, var(--cyan) 65%, transparent); box-shadow: 0 28px 90px var(--theme-glow); }
+.project-visual { border-color: var(--line); background: var(--panel); }
+.visual-schema { background: linear-gradient(135deg, var(--panel), var(--surface-raised)); }
+.visual-terrain { background: radial-gradient(ellipse at 60% 100%, color-mix(in srgb, var(--cyan) 22%, transparent), transparent 58%), var(--panel); }
+.tags span { background: color-mix(in srgb, var(--surface-raised) 52%, transparent); }
+.research-section { position: relative; margin-top: 52px; background: var(--panel); transition: background-color .16s linear; }
+.research-section::before, .main-footer::before { content: ''; position: absolute; inset: -44px 0 auto; height: 46px; background: inherit; clip-path: polygon(0 68%, 8% 42%, 16% 69%, 25% 30%, 35% 63%, 45% 24%, 56% 58%, 67% 20%, 78% 62%, 89% 31%, 100% 58%, 100% 100%, 0 100%); }
+.signal, .research-number, .capabilities span { color: var(--cyan); }
+.main-footer { position: relative; margin-top: 52px; }
+.main-footer > a { border-color: color-mix(in srgb, var(--ink) 34%, transparent); }
+.bloom-field i { border-color: color-mix(in srgb, var(--cyan) 25%, transparent); background: linear-gradient(145deg, var(--cyan-soft), var(--theme-secondary)); box-shadow: 0 0 12px var(--theme-glow); }
+.chaos-toggle { color: var(--cyan-soft); border-color: color-mix(in srgb, var(--cyan) 32%, transparent); background: color-mix(in srgb, var(--surface-raised) 52%, transparent); }
+.chaos-toggle:hover { background: color-mix(in srgb, var(--surface-raised) 82%, transparent); }
+
+@media (max-width: 960px) {
+  .main-nav { background: color-mix(in srgb, var(--ink) 92%, transparent); }
+  .wave-field { opacity: .24; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-line { animation: none !important; }
+  .wave-field svg { transform: none; transition: none; }
+}

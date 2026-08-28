@@ -64,6 +64,23 @@ const chaosMode = ref(true)
 const activeIdea = ref(0)
 const pointer = reactive({ x: -400, y: -400 })
 const bursts = ref<Array<{ id: number; x: number; y: number; glyph: string; tx: number; ty: number }>>([])
+type ColorSet = {
+  ink: string
+  panel: string
+  card: string
+  raised: string
+  primary: string
+  secondary: string
+  soft: string
+  grey: string
+}
+const colorSets: ColorSet[] = [
+  { ink: '#031a12', panel: '#082b1d', card: '#0b3525', raised: '#114c35', primary: '#4ff0a0', secondary: '#22d3ee', soft: '#b5fbd4', grey: '#8fc8aa' },
+  { ink: '#041826', panel: '#072d3c', card: '#09384b', raised: '#0d4d67', primary: '#22d3ee', secondary: '#3b82f6', soft: '#b7f4ff', grey: '#89bfcb' },
+  { ink: '#150725', panel: '#29103c', card: '#35134b', raised: '#4d1b67', primary: '#a78bfa', secondary: '#f472b6', soft: '#e9ddff', grey: '#baa4ca' },
+  { ink: '#290913', panel: '#431020', card: '#521328', raised: '#6c1a32', primary: '#fb7185', secondary: '#f59e0b', soft: '#ffe0e4', grey: '#d0a0aa' },
+  { ink: '#06172b', panel: '#0a2b49', card: '#0b375d', raised: '#104d77', primary: '#38bdf8', secondary: '#67e8f9', soft: '#d7f3ff', grey: '#8ebdd1' }
+]
 const ideaLoop = [
   'What if browsers rendered differently?',
   'What if the language taught the machine?',
@@ -160,15 +177,55 @@ const visibleProjects = computed(() => activeFilter.value === 'all'
   : projects.filter(project => project.category === activeFilter.value)
 )
 
+const blendHex = (from: string, to: string, amount: number) => {
+  const channels = [1, 3, 5].map((offset) => {
+    const start = Number.parseInt(from.slice(offset, offset + 2), 16)
+    const end = Number.parseInt(to.slice(offset, offset + 2), 16)
+    return Math.round(start + (end - start) * amount).toString(16).padStart(2, '0')
+  })
+  return `#${channels.join('')}`
+}
+
+const withAlpha = (hex: string, alpha: number) => {
+  const channels = [1, 3, 5].map(offset => Number.parseInt(hex.slice(offset, offset + 2), 16))
+  return `rgba(${channels.join(', ')}, ${alpha})`
+}
+
+const activeColors = computed<ColorSet>(() => {
+  const scaled = Math.min(1, Math.max(0, scrollProgress.value)) * (colorSets.length - 1)
+  const index = Math.min(Math.floor(scaled), colorSets.length - 2)
+  const amount = scaled - index
+  const from = colorSets[index]
+  const to = colorSets[index + 1]
+  return Object.fromEntries(
+    Object.keys(from).map(key => [key, blendHex(from[key as keyof ColorSet], to[key as keyof ColorSet], amount)])
+  ) as ColorSet
+})
+
 const handleScroll = () => {
   const total = document.documentElement.scrollHeight - window.innerHeight
   scrollProgress.value = total > 0 ? window.scrollY / total : 0
 }
 
-const shellStyle = computed(() => ({
-  '--pointer-x': `${pointer.x}px`,
-  '--pointer-y': `${pointer.y}px`
-}))
+const shellStyle = computed(() => {
+  const colors = activeColors.value
+  return {
+    '--pointer-x': `${pointer.x}px`,
+    '--pointer-y': `${pointer.y}px`,
+    '--ink': colors.ink,
+    '--panel': colors.panel,
+    '--surface-card': colors.card,
+    '--surface-raised': colors.raised,
+    '--cyan': colors.primary,
+    '--theme-secondary': colors.secondary,
+    '--cyan-soft': colors.soft,
+    '--grey': colors.grey,
+    '--line': withAlpha(colors.soft, .17),
+    '--theme-glow': withAlpha(colors.primary, .28),
+    '--wave-shift': `${scrollProgress.value * -240}px`,
+    '--wave-lift': `${Math.sin(scrollProgress.value * Math.PI * 6) * 22}px`
+  }
+})
 
 const handlePointerMove = (event: PointerEvent) => {
   if (!chaosMode.value) return
@@ -240,6 +297,14 @@ onBeforeUnmount(() => {
   >
     <div class="scroll-meter" :style="{ transform: `scaleX(${scrollProgress})` }" />
     <div class="pointer-glow" aria-hidden="true" />
+    <div class="wave-field" aria-hidden="true">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="none">
+        <path class="wave-line wave-line-a" d="M-260 156 C 20 20, 230 302, 510 156 S 1000 22, 1280 156 S 1760 290, 1940 120" />
+        <path class="wave-line wave-line-b" d="M-220 390 C 90 215, 300 565, 610 390 S 1120 215, 1430 390 S 1790 540, 1960 350" />
+        <path class="wave-line wave-line-c" d="M-300 665 C 15 480, 315 845, 630 665 S 1130 480, 1445 665 S 1810 830, 1980 625" />
+        <path class="wave-line wave-line-d" d="M-180 790 C 150 665, 400 905, 730 790 S 1240 665, 1570 790 S 1850 900, 2010 755" />
+      </svg>
+    </div>
     <div class="bloom-field" aria-hidden="true">
       <i
         v-for="petal in 18"
@@ -313,6 +378,11 @@ onBeforeUnmount(() => {
       </Card>
 
       <a href="#portfolio" class="launch-scroll"><span>Scroll for the rabbit holes</span><i /></a>
+      <div class="hero-wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0 65 C180 10 310 115 500 58 C690 0 820 110 1010 52 C1190 -2 1320 84 1440 38 L1440 120 L0 120 Z" />
+        </svg>
+      </div>
     </section>
 
     <div id="portfolio" class="portfolio-shell">
