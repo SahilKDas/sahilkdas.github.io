@@ -52,7 +52,7 @@ type Project = {
   category: 'engines' | 'languages' | 'platforms'
   url: string
   featured?: boolean
-  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit'
+  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit' | 'chess'
 }
 
 const filters = ['all', 'engines', 'languages', 'platforms'] as const
@@ -114,6 +114,18 @@ const projects: Project[] = [
     url: 'https://github.com/SahilKDas',
     featured: true,
     visual: 'schema'
+  },
+  {
+    name: 'Eloi',
+    extension: '.exe',
+    role: 'My C++26 chess-engine fork',
+    description: 'I’m rebuilding Morlock as a native Windows chess app with a Skia GUI, UCI mode, NNUE evaluation, and a hard 40-ply search cap.',
+    details: ['Alpha-beta, LMR, transposition tables, and incremental NNUE', 'Playable GUI plus UCI and perft modes'],
+    tags: ['C++26', 'Skia', 'Chess engine'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/Eloi',
+    featured: true,
+    visual: 'chess'
   },
   {
     name: 'RoseWind',
@@ -500,6 +512,17 @@ onBeforeUnmount(() => {
               <template v-else-if="project.visual === 'terrain'">
                 <div class="topography topo-one"/><div class="topography topo-two"/><div class="topography topo-three"/>
                 <div class="terrain-readout"><span>SEED 0826</span><span>H 847M</span></div>
+              </template>
+              <template v-else-if="project.visual === 'chess'">
+                <div class="chess-board">
+                  <i v-for="square in 64" :key="square" :class="{ dark: (Math.floor((square - 1) / 8) + ((square - 1) % 8)) % 2 }" />
+                  <b class="chess-piece piece-black-king">♚</b>
+                  <b class="chess-piece piece-black-knight">♞</b>
+                  <b class="chess-piece piece-white-queen">♕</b>
+                  <b class="chess-piece piece-white-king">♔</b>
+                  <b class="chess-piece piece-white-knight">♘</b>
+                </div>
+                <div class="chess-hud"><span>DEPTH <b>40</b></span><span>NNUE <b>ON</b></span><span>UCI <b>READY</b></span></div>
               </template>
               <template v-else>
                 <div class="terminal-lines">

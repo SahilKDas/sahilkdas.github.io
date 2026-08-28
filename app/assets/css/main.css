@@ -144,6 +144,13 @@ button { color: inherit; }
 .topography { position: absolute; border: 1px solid rgba(110,231,168,.25); border-radius: 48% 52% 39% 61% / 58% 42% 58% 42%; transform: rotate(-11deg); }
 .topo-one { width: 180px; height: 95px; left: 22%; top: 50px; }.topo-two { width: 140px; height: 70px; left: 28%; top: 62px; }.topo-three { width: 95px; height: 43px; left: 35%; top: 75px; background: rgba(110,231,168,.05); }
 .terrain-readout { position: absolute; inset: auto 10px 9px; display: flex; justify-content: space-between; color: #46a96f; font: 500 6px var(--mono); }
+.visual-chess { display: grid; grid-template-columns: minmax(180px, 1fr) 92px; align-items: stretch; padding: 16px; background: radial-gradient(circle at 22% 45%, color-mix(in srgb, var(--cyan) 16%, transparent), transparent 45%), var(--panel); }
+.chess-board { position: relative; width: min(100%, 214px); aspect-ratio: 1; align-self: center; justify-self: center; display: grid; grid-template-columns: repeat(8, 1fr); overflow: hidden; border: 1px solid color-mix(in srgb, var(--cyan-soft) 24%, transparent); box-shadow: 0 18px 42px rgba(0,0,0,.27), 0 0 30px var(--theme-glow); }
+.chess-board > i { background: color-mix(in srgb, var(--surface-raised) 32%, var(--panel)); }.chess-board > i.dark { background: color-mix(in srgb, var(--cyan) 24%, var(--surface-card)); }
+.chess-piece { position: absolute; width: 12.5%; height: 12.5%; display: grid; place-items: center; color: var(--cyan-soft); font: 400 clamp(13px, 1.5vw, 23px)/1 serif; text-shadow: 0 3px 10px rgba(0,0,0,.5); }
+.piece-black-king { left: 50%; top: 0; color: var(--theme-secondary); }.piece-black-knight { left: 62.5%; top: 25%; color: var(--theme-secondary); }.piece-white-queen { left: 37.5%; top: 87.5%; }.piece-white-king { left: 50%; top: 87.5%; }.piece-white-knight { left: 62.5%; top: 62.5%; }
+.chess-hud { padding: 12px 0 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 17px; border-left: 1px solid var(--line); color: var(--grey); font: 500 7px var(--mono); letter-spacing: .08em; }
+.chess-hud span { display: flex; flex-direction: column; gap: 4px; }.chess-hud b { color: var(--cyan); font-size: 10px; }
 
 .card-copy h3 { margin: 0 0 11px; font: 600 23px var(--display); letter-spacing: -.045em; }
 .featured .card-copy h3 { font-size: clamp(26px, 2.3vw, 37px); }
@@ -412,6 +419,7 @@ button { color: inherit; }
   .console-content { grid-template-columns: 1fr; }.console-rail { display: none; }
   .system-node { width: 112px; padding: 9px; }.node-core { left: 4%; }.node-data { right: 3%; }.node-lang { left: 39%; }
   .launch-scroll { bottom: 18px; }
+  .visual-chess { grid-template-columns: 1fr 70px; padding: 10px; }.chess-hud { gap: 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
