@@ -1,4 +1,4 @@
-# Sahil K. Das — Portfolio
+# Me
 
 A Nuxt 4 portfolio for me!
 
@@ -24,4 +24,4 @@ The server listens on port `3000` by default. Set `PORT` and `HOST` to override 
 
 Every push to `main` runs the Pages workflow, creates a static build using Nitro's `github_pages` preset, and deploys `.output/public`.
 
-The public site is available at [sahilkdas.github.io](https://sahilkdas.github.io/).
+Go check out [sahilkdas.github.io](https://sahilkdas.github.io/)!
