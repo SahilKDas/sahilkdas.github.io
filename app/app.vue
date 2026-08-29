@@ -118,9 +118,9 @@ const projects: Project[] = [
   {
     name: 'Eloi',
     extension: '.exe',
-    role: 'My C++26 chess-engine fork',
-    description: 'I’m rebuilding Morlock as a native Windows chess app with a Skia GUI, UCI mode, NNUE evaluation, and a hard 40-ply search cap.',
-    details: ['Alpha-beta, LMR, transposition tables, and incremental NNUE', 'Playable GUI plus UCI and perft modes'],
+    role: 'Morlock-free. Eloi now.',
+    description: 'I turned the fork into a C++26 chess engine and native Windows app with a Skia GUI, its own opening personality, and no Go left anywhere.',
+    details: ['Aspiration PVS, LMR, null-move / futility pruning, four-way TT, and incremental NNUE', 'Italian + Nimzo personality backed by an embedded 8,000-edge opening graph', '84.75% in a mirrored 200-game gauntlet'],
     tags: ['C++26', 'Skia', 'Chess engine'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/Eloi',
@@ -522,7 +522,7 @@ onBeforeUnmount(() => {
                   <b class="chess-piece piece-white-king">♔</b>
                   <b class="chess-piece piece-white-knight">♘</b>
                 </div>
-                <div class="chess-hud"><span>DEPTH <b>40</b></span><span>NNUE <b>ON</b></span><span>UCI <b>READY</b></span></div>
+                <div class="chess-hud"><span>DEPTH <b>40</b></span><span>BOOK <b>8K+</b></span><span>GAUNTLET <b>84.75%</b></span></div>
               </template>
               <template v-else>
                 <div class="terminal-lines">
