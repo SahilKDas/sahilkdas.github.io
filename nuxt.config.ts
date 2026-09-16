@@ -23,12 +23,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Sahil K. Das — Software Engineer & Systems Tinkerer',
+      title: 'Sahil K. Das — Systems, Engines & Tiny Brains',
       meta: [
-        { name: 'description', content: 'I’m Sahil K. Das. I build runtimes, renderers, languages, and whatever weird idea I can’t leave alone.' },
+        { name: 'description', content: 'I’m Sahil K. Das. I build chess engines, neural drivers, language tools, simulations, and whatever weird idea I can’t leave alone.' },
         { name: 'theme-color', content: '#071A12' },
-        { property: 'og:title', content: 'Sahil K. Das — Software Engineer & Systems Tinkerer' },
-        { property: 'og:description', content: 'I build runtimes, renderers, languages, and whatever weird idea I can’t leave alone.' },
+        { property: 'og:title', content: 'Sahil K. Das — Systems, Engines & Tiny Brains' },
+        { property: 'og:description', content: 'I build chess engines, neural drivers, language tools, simulations, and whatever weird idea I can’t leave alone.' },
         { property: 'og:type', content: 'website' }
       ]
     }
