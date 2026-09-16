@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 const blueShades = ['#38bdf8', '#60a5fa', '#22d3ee', '#93c5fd', '#818cf8', '#67e8f9', '#0ea5e9']
+const blueWordListeners = new WeakMap<HTMLElement, (event: PointerEvent) => void>()
 
 const vBlueWords = {
   mounted(element: HTMLElement) {
@@ -31,14 +32,24 @@ const vBlueWords = {
         const word = document.createElement('span')
         word.className = 'hover-word'
         word.textContent = token
-        word.addEventListener('pointerenter', () => {
-          const shade = blueShades[Math.floor(Math.random() * blueShades.length)]
-          word.style.setProperty('--word-blue', shade)
-        })
         fragment.append(word)
       }
       node.replaceWith(fragment)
     }
+
+    const handleWordHover = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null
+      const word = target?.closest?.('.hover-word') as HTMLElement | null
+      if (!word || !element.contains(word)) return
+      word.style.setProperty('--word-blue', blueShades[Math.floor(Math.random() * blueShades.length)])
+    }
+    blueWordListeners.set(element, handleWordHover)
+    element.addEventListener('pointerover', handleWordHover)
+  },
+  beforeUnmount(element: HTMLElement) {
+    const listener = blueWordListeners.get(element)
+    if (listener) element.removeEventListener('pointerover', listener)
+    blueWordListeners.delete(element)
   }
 }
 
@@ -59,10 +70,12 @@ const filters = ['all', 'engines', 'languages', 'platforms'] as const
 type Filter = typeof filters[number]
 const activeFilter = ref<Filter>('all')
 const copied = ref(false)
-const scrollProgress = ref(0)
+const activePaletteIndex = ref(0)
 const chaosMode = ref(true)
 const activeIdea = ref(0)
-const pointer = reactive({ x: -400, y: -400 })
+const scrollMeter = ref<HTMLElement | null>(null)
+const pointerGlow = ref<HTMLElement | null>(null)
+const waveSvg = ref<SVGElement | null>(null)
 const bursts = ref<Array<{ id: number; x: number; y: number; glyph: string; tx: number; ty: number }>>([])
 type ColorSet = {
   ink: string
@@ -88,6 +101,9 @@ const ideaLoop = [
   'What if ten thousand tiny brains evolved together?'
 ]
 let ideaTimer: ReturnType<typeof window.setInterval> | undefined
+let scrollFrame: number | undefined
+let pointerFrame: number | undefined
+const latestPointer = { x: -400, y: -400 }
 let burstId = 0
 
 const projects: Project[] = [
@@ -210,41 +226,33 @@ const visibleProjects = computed(() => activeFilter.value === 'all'
   : projects.filter(project => project.category === activeFilter.value)
 )
 
-const blendHex = (from: string, to: string, amount: number) => {
-  const channels = [1, 3, 5].map((offset) => {
-    const start = Number.parseInt(from.slice(offset, offset + 2), 16)
-    const end = Number.parseInt(to.slice(offset, offset + 2), 16)
-    return Math.round(start + (end - start) * amount).toString(16).padStart(2, '0')
-  })
-  return `#${channels.join('')}`
-}
-
 const withAlpha = (hex: string, alpha: number) => {
   const channels = [1, 3, 5].map(offset => Number.parseInt(hex.slice(offset, offset + 2), 16))
   return `rgba(${channels.join(', ')}, ${alpha})`
 }
 
-const activeColors = computed<ColorSet>(() => {
-  const scaled = Math.min(1, Math.max(0, scrollProgress.value)) * (colorSets.length - 1)
-  const index = Math.min(Math.floor(scaled), colorSets.length - 2)
-  const amount = scaled - index
-  const from = colorSets[index]
-  const to = colorSets[index + 1]
-  return Object.fromEntries(
-    Object.keys(from).map(key => [key, blendHex(from[key as keyof ColorSet], to[key as keyof ColorSet], amount)])
-  ) as ColorSet
-})
+const activeColors = computed<ColorSet>(() => colorSets[activePaletteIndex.value])
 
 const handleScroll = () => {
-  const total = document.documentElement.scrollHeight - window.innerHeight
-  scrollProgress.value = total > 0 ? window.scrollY / total : 0
+  if (scrollFrame !== undefined) return
+  scrollFrame = window.requestAnimationFrame(() => {
+    scrollFrame = undefined
+    const total = document.documentElement.scrollHeight - window.innerHeight
+    const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0
+    if (scrollMeter.value) scrollMeter.value.style.transform = `scaleX(${progress})`
+    if (waveSvg.value) {
+      const waveX = progress * -140
+      const waveY = Math.sin(progress * Math.PI * 6) * 12
+      waveSvg.value.style.transform = `translate3d(${waveX}px, ${waveY}px, 0)`
+    }
+    const nextPalette = Math.min(colorSets.length - 1, Math.floor(progress * colorSets.length))
+    if (nextPalette !== activePaletteIndex.value) activePaletteIndex.value = nextPalette
+  })
 }
 
 const shellStyle = computed(() => {
   const colors = activeColors.value
   return {
-    '--pointer-x': `${pointer.x}px`,
-    '--pointer-y': `${pointer.y}px`,
     '--ink': colors.ink,
     '--panel': colors.panel,
     '--surface-card': colors.card,
@@ -254,16 +262,21 @@ const shellStyle = computed(() => {
     '--cyan-soft': colors.soft,
     '--grey': colors.grey,
     '--line': withAlpha(colors.soft, .17),
-    '--theme-glow': withAlpha(colors.primary, .28),
-    '--wave-shift': `${scrollProgress.value * -240}px`,
-    '--wave-lift': `${Math.sin(scrollProgress.value * Math.PI * 6) * 22}px`
+    '--theme-glow': withAlpha(colors.primary, .28)
   }
 })
 
 const handlePointerMove = (event: PointerEvent) => {
   if (!chaosMode.value) return
-  pointer.x = event.clientX
-  pointer.y = event.clientY
+  latestPointer.x = event.clientX
+  latestPointer.y = event.clientY
+  if (pointerFrame !== undefined) return
+  pointerFrame = window.requestAnimationFrame(() => {
+    pointerFrame = undefined
+    if (pointerGlow.value) {
+      pointerGlow.value.style.transform = `translate3d(${latestPointer.x}px, ${latestPointer.y}px, 0) translate(-50%, -50%)`
+    }
+  })
 }
 
 const popBurst = (event: PointerEvent) => {
@@ -316,6 +329,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll)
+  if (scrollFrame !== undefined) window.cancelAnimationFrame(scrollFrame)
+  if (pointerFrame !== undefined) window.cancelAnimationFrame(pointerFrame)
   if (ideaTimer) window.clearInterval(ideaTimer)
 })
 </script>
@@ -328,10 +343,10 @@ onBeforeUnmount(() => {
     @pointermove="handlePointerMove"
     @pointerdown="popBurst"
   >
-    <div class="scroll-meter" :style="{ transform: `scaleX(${scrollProgress})` }" />
-    <div class="pointer-glow" aria-hidden="true" />
+    <div ref="scrollMeter" class="scroll-meter" />
+    <div ref="pointerGlow" class="pointer-glow" aria-hidden="true" />
     <div class="wave-field" aria-hidden="true">
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <svg ref="waveSvg" viewBox="0 0 1600 900" preserveAspectRatio="none">
         <path class="wave-line wave-line-a" d="M-260 156 C 20 20, 230 302, 510 156 S 1000 22, 1280 156 S 1760 290, 1940 120" />
         <path class="wave-line wave-line-b" d="M-220 390 C 90 215, 300 565, 610 390 S 1120 215, 1430 390 S 1790 540, 1960 350" />
         <path class="wave-line wave-line-c" d="M-300 665 C 15 480, 315 845, 630 665 S 1130 480, 1445 665 S 1810 830, 1980 625" />
@@ -340,7 +355,7 @@ onBeforeUnmount(() => {
     </div>
     <div class="bloom-field" aria-hidden="true">
       <i
-        v-for="petal in 18"
+        v-for="petal in 10"
         :key="petal"
         :style="{
           '--petal-left': `${(petal * 37) % 100}%`,
