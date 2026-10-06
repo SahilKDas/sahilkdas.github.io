@@ -63,7 +63,7 @@ type Project = {
   category: 'engines' | 'languages' | 'platforms'
   url: string
   featured?: boolean
-  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit' | 'chess' | 'race' | 'config' | 'ecosystem'
+  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit' | 'chess' | 'race' | 'config' | 'ecosystem' | 'hive' | 'port'
 }
 
 const filters = ['all', 'engines', 'languages', 'platforms'] as const
@@ -95,10 +95,10 @@ const colorSets: ColorSet[] = [
   { ink: '#06172b', panel: '#0a2b49', card: '#0b375d', raised: '#104d77', primary: '#38bdf8', secondary: '#67e8f9', soft: '#d7f3ff', grey: '#8ebdd1' }
 ]
 const ideaLoop = [
-  'What if the machine learned to take the corner?',
-  'What if a chess engine explained its own evidence?',
-  'What if configuration behaved like a real language?',
-  'What if ten thousand tiny brains evolved together?'
+  'What if a Hive agent learned the position instead of memorizing it?',
+  'What if self-play produced evidence I could actually interrogate?',
+  'What if a native port kept the original game data outside the repo?',
+  'What if every failed training run stayed useful?'
 ]
 let ideaTimer: ReturnType<typeof window.setInterval> | undefined
 let scrollFrame: number | undefined
@@ -108,60 +108,62 @@ let burstId = 0
 
 const projects: Project[] = [
   {
-    name: 'Eloi',
-    extension: '3.1.2',
-    role: 'My chess-engine obsession',
-    description: 'I build Eloi: a C++26 chess engine, native Windows app, and reproducible engineering project with a Skia GUI and its own Lichess client.',
-    details: ['Standard play routes through a pinned, crash-contained Caissa 1.25 brain', 'My code owns legality, protocols, variants, GUI, routing, safety, and packaging', 'Standard, Chess960, and Horde · exactly three deterministic RootSplit lanes'],
-    tags: ['C++26', 'Skia', 'Chess engine', 'UCI + Lichess'],
+    name: 'Genseki',
+    extension: '#1',
+    role: 'The main quest',
+    description: 'I saw a small bot ecosystem for a big-player-base board game and decided it was mine. Genseki is my C++26/Python Hive engine lab.',
+    details: ['Alpha: native UHP engine + GUI built on attributed MIT foundations', 'Rho: separate policy/value research, self-play data, and training work', 'Current focus: strength, rules reliability, and a game people can actually use'],
+    tags: ['C++26', 'Python', 'Policy + value', 'Hive / UHP'],
     category: 'engines',
-    url: 'https://github.com/SahilKDas/Eloi',
+    url: 'https://github.com/SahilKDas/Genseki',
     featured: true,
-    visual: 'chess'
+    visual: 'hive'
   },
   {
-    name: 'FIADA',
-    extension: '.exe',
-    role: 'I taught a race car to drive',
-    description: 'I made a C++26 top-down racer, then trained a recurrent neural driver to survive it—items, shortcuts, rivals and all.',
-    details: ['1,011,461-parameter recurrent policy running at 30 Hz', 'Eight-driver races across five tracks with 120 Hz deterministic physics', '31/33 randomized evaluation races completed with zero escapes'],
-    tags: ['C++26', 'Recurrent AI', 'Skia', 'Simulation'],
+    name: '64DS-DX',
+    extension: '#2',
+    role: 'The native-port lane',
+    description: 'My Super Mario 64 DS PC-port lane, kept in sync with the credited decompilation and co-op foundations it builds on.',
+    details: ['Downstream of tangosdev/sm64ds-decomp and SCOPIC64/sm64ds-coop-port', 'ROMs and Nintendo assets stay outside the repository', 'Working toward a cleaner native port and integration path'],
+    tags: ['C++', 'Decompilation', 'Native port', 'Upstream sync'],
     category: 'engines',
-    url: 'https://github.com/SahilKDas/FIADA',
+    url: 'https://github.com/SahilKDas/64DS-DX',
+    featured: true,
+    visual: 'port'
+  },
+  {
+    name: 'MK7-Native',
+    extension: '#3',
+    role: 'The long-term port',
+    description: 'I’m building an experimental C++26 route toward running Mario Kart 7 natively on PCs and laptops instead of hiding everything behind full-system emulation.',
+    details: ['External-ROM workflow with user-supplied game data', 'SDL3/Vulkan host plus a growing 3DS runtime layer', 'Services, input, persistent saves, and graphics are coming online piece by piece'],
+    tags: ['C++26', 'Vulkan', 'SDL3', 'Static recompilation'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/MK7-Native',
     featured: true,
     visual: 'race'
   },
   {
-    name: 'TcSON',
-    extension: '.tcson',
-    role: 'Config files got out of hand',
-    description: 'I built a tiny TypeScript configuration language that evaluates trusted source into boring, deterministic JSON.',
-    details: ['Library API + CLI + published @sahilkdas/tcson package', 'Node and Bun first-class; Deno compatible', 'Fresh evaluation realms and canonical JSON output'],
-    tags: ['TypeScript', 'Node + Bun', 'Language tooling'],
-    category: 'platforms',
-    url: 'https://github.com/SahilKDas/tcson',
-    visual: 'config'
+    name: 'Eloi',
+    extension: '#4 / paused',
+    role: 'Waiting on Kaggle',
+    description: 'My chess-engine rabbit hole has a Rust 2024 four-player branch, but I’m not actively working on it until somebody takes on the v4.0.0 Kaggle program for me.',
+    details: ['14×14 four-player core with FFA and Teams state', 'Native GUI and three-thread baseline search', 'Kaggle-ready self-play and training scaffolding; currently paused'],
+    tags: ['Rust 2024', 'Four-player chess', 'Self-play', 'Paused'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/Eloi/tree/v4.0.0',
+    visual: 'chess'
   },
   {
     name: 'LFE‑NNUE',
-    role: 'Ten thousand evolving brains',
-    description: 'I rewrote Life Engine in strict TypeScript and added sparse neural behavior, evolution, ecology, observability, and a native C++ path.',
-    details: ['A major fork of MaxRobinsonTheGreat/LifeEngine', 'Deterministic NNUE trainer with inherited, mutating policies', '10k-organism performance gate and native C++23 build'],
-    tags: ['TypeScript', 'NNUE', 'C++23', 'Attributed fork'],
+    extension: 'complete',
+    role: 'The finished ecosystem',
+    description: 'I turned Life Engine into a native evolutionary ecosystem where organisms inherit bodies, physiology, perception, and sparse neural behavior.',
+    details: ['A major, attributed fork of MaxRobinsonTheGreat/LifeEngine', 'Inherited and mutating neural policies without scripted steering', 'Ecology, lineage, observability, and bounded long-run analytics'],
+    tags: ['C++', 'TypeScript', 'NNUE', 'Evolution'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/LFE-NNUE',
     visual: 'ecosystem'
-  },
-  {
-    name: 'RoseCondor',
-    extension: '.rcdb',
-    role: 'I made the whole thing',
-    description: 'I made a type-safe serialization format and tiny database engine for TypeScript and Node.js.',
-    details: ['Schemas that read like normal code', 'Very picky allowonly / disallow / block rules'],
-    tags: ['TypeScript', 'Node.js', 'Serialization'],
-    category: 'platforms',
-    url: 'https://github.com/SahilKDas',
-    visual: 'schema'
   },
   {
     name: 'RoseWind',
@@ -185,17 +187,6 @@ const projects: Project[] = [
     visual: 'jit'
   },
   {
-    name: 'Synthiscape',
-    extension: '.py',
-    role: 'I grow fake worlds',
-    description: 'I generate huge explorable worlds with biomes, erosion, rivers, and navigation that stays snappy.',
-    details: ['Procedural world simulation', 'Only rendering what you can actually see'],
-    tags: ['Python', 'Pygame', 'Procedural graphics'],
-    category: 'engines',
-    url: 'https://github.com/SahilKDas/Synthiscape',
-    visual: 'terrain'
-  },
-  {
     name: 'Colubrid',
     extension: '.py',
     role: 'Python, from scratch',
@@ -209,7 +200,11 @@ const projects: Project[] = [
 ]
 
 const repositoryIndex = [
-  { name: '64DS-DX', type: 'Modding lab · fork', language: 'C++', description: 'My experimental SM64DS Deluxe branch, built on the public SM64DS decompilation project.', url: 'https://github.com/SahilKDas/64DS-DX' },
+  { name: 'SM3DL-Recomp', type: 'Starts January 2027', language: 'C++', description: 'A blunt future goal: recompile Super Mario 3D Land for native hardware. The repository is a marker, not fake progress.', url: 'https://github.com/SahilKDas/SM3DL-Recomp' },
+  { name: 'HexQuoridor-3P', type: 'Useful failure', language: 'Java', description: 'A recent experiment I keep around because “plan first” is still a technical result.', url: 'https://github.com/SahilKDas/HexQuoridor-3P' },
+  { name: 'FIADA', type: 'Completed chapter', language: 'C++', description: 'A deterministic top-down racer with a recurrent neural driver. I learned from it; I am not pretending it is still active.', url: 'https://github.com/SahilKDas/FIADA' },
+  { name: 'TcSON', type: 'Archived tooling', language: 'TypeScript', description: 'A configuration-language experiment that evaluated trusted source into deterministic JSON.', url: 'https://github.com/SahilKDas/tcson' },
+  { name: 'Synthiscape', type: 'Procedural worlds', language: 'Python', description: 'A fast terrain generator with biomes, erosion, rivers, zoom, and pan in one Python file.', url: 'https://github.com/SahilKDas/Synthiscape' },
   { name: 'Short-Term Projects', type: 'Rapid experiments', language: 'Svelte', description: 'The deliberately small builds I use to keep trying ideas without pretending each one is a startup.', url: 'https://github.com/SahilKDas/_Short_Term_Projects' },
   { name: 'T_Caret', type: 'Archived renderer', language: 'C++', description: 'My earlier C++23 and Vulkan web-layout renderer experiment. Finished as a chapter, kept as evidence.', url: 'https://github.com/SahilKDas/T_Caret' },
   { name: 'Juliana', type: 'Archived language', language: 'Rust', description: 'My archived attempt to rethink a few parts of Julia.', url: 'https://github.com/SahilKDas/Juliana' },
@@ -387,9 +382,9 @@ onBeforeUnmount(() => {
       </header>
 
       <div v-blue-words class="launch-copy">
-        <Badge variant="secondary" class="launch-eyebrow">Chess · neural drivers · language tools · simulated worlds</Badge>
-        <h1>I build systems that<br><em>learn, search &amp; ship.</em></h1>
-        <p>Lately that means a chess engine, a recurrent racing driver, an evolving ecosystem, and config files with suspiciously strong opinions.</p>
+        <Badge variant="secondary" class="launch-eyebrow">Game-playing agents · policy/value learning · native systems</Badge>
+        <h1>I build agents that<br><em>learn, compete &amp; ship.</em></h1>
+        <p>Genseki is the main quest: a Hive engine lab where neural research has to survive real rules, real opponents, and evidence I can reproduce.</p>
         <div class="launch-actions" data-no-blue>
           <Button as="a" href="#portfolio" size="lg" class="launch-primary">
             See what I’m building
@@ -409,18 +404,18 @@ onBeforeUnmount(() => {
         </CardHeader>
         <CardContent class="console-content">
           <div class="console-rail">
-            <span class="active">01 / SEARCH</span>
-            <span>02 / LEARNING</span>
-            <span>03 / TOOLING</span>
-            <span>04 / ECOLOGY</span>
+            <span class="active">01 / GENSEKI</span>
+            <span>02 / SELF-PLAY</span>
+            <span>03 / NATIVE PORTS</span>
+            <span>04 / EVIDENCE</span>
           </div>
           <div class="console-stage">
             <div class="stage-grid" />
-            <div class="system-node node-core"><b>ELOI 3.1.2</b><small>SEARCH + CHESS</small></div>
-            <div class="system-node node-data"><b>FIADA</b><small>RECURRENT DRIVER</small></div>
-            <div class="system-node node-lang"><b>TCSON / LFE</b><small>TOOLS + TINY BRAINS</small></div>
+            <div class="system-node node-core"><b>GENSEKI</b><small>HIVE + POLICY/VALUE</small></div>
+            <div class="system-node node-data"><b>64DS-DX</b><small>NATIVE PORT / #2</small></div>
+            <div class="system-node node-lang"><b>MK7 / ELOI</b><small>#3 / #4 PAUSED</small></div>
             <div class="system-path path-one"/><div class="system-path path-two"/>
-            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>35 REPOS</span><span>4 CURRENT BUILDS</span></div>
+            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>43 PUBLIC REPOS</span><span>4-ITEM QUEUE</span></div>
           </div>
         </CardContent>
       </Card>
@@ -447,7 +442,7 @@ onBeforeUnmount(() => {
           <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
           <p class="role">Software engineer &amp;<br>professional rabbit-hole finder</p>
-          <p class="intro">I don’t stick to one lane. My GitHub is a live R&amp;D lab full of engines, tiny brains, languages, games, infrastructure, and experiments that started with “what if?”</p>
+          <p class="intro">I build whatever I want—but right now I’m zooming in on policy/value learning, NNUEs, self-play, training pipelines, and agents that have to make decisions inside real game systems.</p>
 
           <div class="profile-actions">
             <a class="primary-action" href="https://github.com/SahilKDas" target="_blank" rel="noopener">
@@ -461,13 +456,13 @@ onBeforeUnmount(() => {
             </button>
           </div>
 
-          <p class="build-cadence">“Sometimes I ship in a day; sometimes I disappear into a month-long build. Every repository is a laboratory.”</p>
+          <p class="build-cadence">“Sometimes I deliver in a day; sometimes I disappear into a weeks-long project.”</p>
         </div>
 
         <div class="stack-block">
-          <div class="stack-label"><span>Current toolbox</span><span>06 usual suspects</span></div>
+          <div class="stack-label"><span>Current toolbox</span><span>08 usual suspects</span></div>
           <div class="stack-pills">
-            <span>C++26</span><span>TypeScript</span><span>Python</span><span>Skia</span><span>Bun</span><span>CMake</span>
+            <span>C++26</span><span>Rust</span><span>Python</span><span>TypeScript</span><span>Vulkan</span><span>CMake</span><span>Cargo</span><span>Bun</span>
           </div>
         </div>
 
@@ -480,8 +475,8 @@ onBeforeUnmount(() => {
 
     <main class="work-pane">
       <nav v-blue-words class="main-nav" aria-label="Page sections">
-        <a href="#work">Things I built</a>
-        <a href="#research">Rabbit holes</a>
+        <a href="#work">Priority queue</a>
+        <a href="#research">Neural work</a>
         <a href="#about">Me</a>
         <button class="chaos-toggle" data-no-blue type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
           <i /> {{ chaosMode ? 'Low power' : 'Full signal' }}
@@ -497,10 +492,10 @@ onBeforeUnmount(() => {
       </div>
 
       <section v-blue-words class="main-intro" id="work">
-        <p class="section-kicker"><span>01</span> Stuff I’ve built</p>
+        <p class="section-kicker"><span>01</span> Current priority queue</p>
         <div class="headline-row">
-          <h2>I build below<br>the abstraction.</h2>
-          <p>Engines, languages, and other things I probably could’ve made the easy way.</p>
+          <h2>Neural systems<br>with something to prove.</h2>
+          <p>Four projects, in order. Genseki comes first; Eloi stays paused until its Kaggle program has an owner.</p>
         </div>
 
         <div class="filter-row" aria-label="Filter projects">
@@ -549,6 +544,17 @@ onBeforeUnmount(() => {
                 <div class="topography topo-one"/><div class="topography topo-two"/><div class="topography topo-three"/>
                 <div class="terrain-readout"><span>SEED 0826</span><span>H 847M</span></div>
               </template>
+              <template v-else-if="project.visual === 'hive'">
+                <div class="hive-board">
+                  <i v-for="cell in 19" :key="cell" :class="[`hive-cell-${cell}`, { active: [3, 6, 8, 10, 12, 15, 17].includes(cell) }]" />
+                  <b class="hive-piece hive-queen">Q</b><b class="hive-piece hive-ant">A</b><b class="hive-piece hive-beetle">B</b>
+                </div>
+                <div class="hive-hud"><span>ALPHA <b>UHP</b></span><span>RHO <b>POLICY/VALUE</b></span><span>PRIORITY <b>#1</b></span></div>
+              </template>
+              <template v-else-if="project.visual === 'port'">
+                <div class="ds-shell"><div class="ds-screen top"><i/><b>64</b><span>DS</span></div><div class="ds-hinge"/><div class="ds-screen bottom"><i/><i/><i/><i/></div></div>
+                <div class="port-hud"><span>DECOMP <b>UPSTREAM</b></span><span>PORT <b>NATIVE</b></span><span>DATA <b>EXTERNAL</b></span></div>
+              </template>
               <template v-else-if="project.visual === 'chess'">
                 <div class="chess-board">
                   <i v-for="square in 64" :key="square" :class="{ dark: (Math.floor((square - 1) / 8) + ((square - 1) % 8)) % 2 }" />
@@ -558,7 +564,7 @@ onBeforeUnmount(() => {
                   <b class="chess-piece piece-white-king">♔</b>
                   <b class="chess-piece piece-white-knight">♘</b>
                 </div>
-                <div class="chess-hud"><span>RELEASE <b>3.1.2</b></span><span>MODES <b>3</b></span><span>COMMITS <b>213</b></span></div>
+                <div class="chess-hud"><span>BRANCH <b>V4.0.0</b></span><span>BOARD <b>14×14</b></span><span>STATUS <b>PAUSED</b></span></div>
               </template>
               <template v-else-if="project.visual === 'race'">
                 <div class="race-track"><i class="track-inner"/><b class="race-car car-one"/><b class="race-car car-two"/><b class="race-car car-three"/></div>
@@ -604,7 +610,7 @@ onBeforeUnmount(() => {
             <h2 id="repo-index-title">More rabbit holes.</h2>
           </div>
           <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">
-            <strong>35</strong><span>public repos and counting</span><i>See the lab ↗</i>
+            <strong>43</strong><span>public repos and counting</span><i>See the lab ↗</i>
           </a>
         </div>
 
@@ -625,7 +631,7 @@ onBeforeUnmount(() => {
         </div>
       </section>
       <section v-blue-words class="research-section" id="research">
-        <p class="section-kicker"><span>02</span> Current research brain-noise</p>
+        <p class="section-kicker"><span>02</span> Neural work, zoomed in</p>
         <div class="research-heading">
           <h2>Questions I keep<br>losing sleep over.</h2>
           <div class="signal"><i/><span>3 rabbit holes open</span></div>
@@ -634,18 +640,18 @@ onBeforeUnmount(() => {
         <div class="research-list">
           <article>
             <span class="research-number">R/01</span>
-            <div><h3>Can tiny brains learn useful behavior?</h3><p>I’m training drivers, evolving organisms, and trying to make every result deterministic enough to interrogate.</p></div>
-            <span class="research-tag">NNUE / recurrent AI</span>
+            <div><h3>Can an agent learn Hive instead of faking it?</h3><p>Rho is my policy/value track: rules-grounded state, self-play evidence, training data, and experiments that stay separate from the Alpha engine.</p></div>
+            <span class="research-tag">Policy / value / self-play</span>
           </article>
           <article>
             <span class="research-number">R/02</span>
-            <div><h3>Fast is nice. Reproducible is better.</h3><p>I care about pinned inputs, clean builds, provenance, benchmarks, and knowing exactly where performance came from.</p></div>
-            <span class="research-tag">Evidence / systems</span>
+            <div><h3>A score is not an explanation.</h3><p>I care about controlled opponents, frozen inputs, reproducible runs, honest failures, and knowing exactly why a model was promoted.</p></div>
+            <span class="research-tag">Evaluation / evidence</span>
           </article>
           <article>
             <span class="research-number">R/03</span>
-            <div><h3>How small can a real language tool be?</h3><p>TcSON, RoseWind, RoseCondor, ALK—I keep building tools that make syntax do one strange job extremely well.</p></div>
-            <span class="research-tag">Languages / tooling</span>
+            <div><h3>Can research survive contact with the whole system?</h3><p>The model still has to meet a rules engine, search, a GUI, performance limits, packaging, and users. I like owning that entire path.</p></div>
+            <span class="research-tag">Research engineering</span>
           </article>
         </div>
       </section>
@@ -655,20 +661,20 @@ onBeforeUnmount(() => {
         <div class="about-grid">
           <h2>Curious by default.<br><em>Way too into the details.</em></h2>
           <div class="about-copy">
-            <p>I started with Python, got curious about what was underneath it, and somehow ended up in C++26 building chess search, neural drivers, language tools, and simulations.</p>
-            <p>I’m currently open to work. Until the right thing shows up, I’ll be on GitHub turning “what if?” into another repository.</p>
+            <p>I started with Python, got curious about what was underneath it, and ended up in C++ and Rust building game engines, neural agents, native ports, and the infrastructure around them.</p>
+            <p>I will apply to <strong>Google DeepMind</strong>. Until then, I’m turning the gap between curiosity and research engineering into public, reproducible work.</p>
           </div>
         </div>
         <div class="capabilities">
-          <div><span>01</span><p>Systems<br>stuff</p></div>
-          <div><span>02</span><p>Language<br>tools</p></div>
-          <div><span>03</span><p>Graphics<br>pipelines</p></div>
-          <div><span>04</span><p>Open-source<br>chaos</p></div>
+          <div><span>01</span><p>Neural<br>agents</p></div>
+          <div><span>02</span><p>Engine<br>systems</p></div>
+          <div><span>03</span><p>Native<br>ports</p></div>
+          <div><span>04</span><p>Evidence &amp;<br>reproducibility</p></div>
         </div>
       </section>
 
       <footer v-blue-words class="main-footer">
-        <div><span>Got a weird problem?</span><h2>Let’s make it real.</h2></div>
+        <div><span>Got a hard problem?</span><h2>Let’s make it measurable.</h2></div>
         <a href="https://github.com/SahilKDas" target="_blank" rel="noopener">Find me on GitHub <span>↗</span></a>
         <p>© {{ new Date().getFullYear() }} Sahil K. Das <span>Built with Nuxt 4</span></p>
       </footer>
