@@ -63,7 +63,7 @@ type Project = {
   category: 'engines' | 'languages' | 'platforms'
   url: string
   featured?: boolean
-  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit' | 'chess' | 'race' | 'config' | 'ecosystem' | 'hive' | 'port'
+  visual: 'renderer' | 'schema' | 'language' | 'terrain' | 'interpreter' | 'jit' | 'chess' | 'race' | 'config' | 'ecosystem' | 'hive' | 'port' | 'tafl' | 'tooling' | 'shobu'
 }
 
 const filters = ['all', 'engines', 'languages', 'platforms'] as const
@@ -95,10 +95,10 @@ const colorSets: ColorSet[] = [
   { ink: '#06172b', panel: '#0a2b49', card: '#0b375d', raised: '#104d77', primary: '#38bdf8', secondary: '#67e8f9', soft: '#d7f3ff', grey: '#8ebdd1' }
 ]
 const ideaLoop = [
-  'What if a Hive agent learned the position instead of memorizing it?',
-  'What if self-play produced evidence I could actually interrogate?',
-  'What if a native port kept the original game data outside the repo?',
-  'What if every failed training run stayed useful?'
+  'What if a neural engine had to play both sides well?',
+  'What if the protocol existed before the ecosystem needed it?',
+  'What if a decompilation workbench stayed native and portable?',
+  'What if every failed qualification run stayed useful?'
 ]
 let ideaTimer: ReturnType<typeof window.setInterval> | undefined
 let scrollFrame: number | undefined
@@ -108,98 +108,102 @@ let burstId = 0
 
 const projects: Project[] = [
   {
-    name: 'Genseki',
-    extension: '#1',
-    role: 'The main quest',
-    description: 'I saw a small bot ecosystem for a big-player-base board game and decided it was mine. Genseki is my C++26/Python Hive engine lab.',
-    details: ['Alpha: native UHP engine + GUI built on attributed MIT foundations', 'Rho: separate policy/value research, self-play data, and training work', 'Current focus: strength, rules reliability, and a game people can actually use'],
-    tags: ['C++26', 'Python', 'Policy + value', 'Hive / UHP'],
+    name: 'Skallagrim',
+    extension: '0.5 beta',
+    role: 'The active neural-engine lab',
+    description: 'I’m building a Copenhagen Hnefatafl engine and research platform where three neural/search ideas have to play both attackers and defenders.',
+    details: ['Rho: CNN policy/value + MCTS · Iota/Beta: NNUE with alpha-beta or MCTS', '1,250-game audited corpus and a completed 750-game campaign', 'Experimental beta: the evidence includes timing failures and an unresolved long-soak timeout'],
+    tags: ['Rust', 'Python', 'CNN + NNUE', 'MCTS'],
     category: 'engines',
-    url: 'https://github.com/SahilKDas/Genseki',
+    url: 'https://github.com/SahilKDas/Skallagrim',
     featured: true,
-    visual: 'hive'
+    visual: 'tafl'
   },
   {
-    name: '64DS-DX',
-    extension: '#2',
-    role: 'The native-port lane',
-    description: 'My Super Mario 64 DS PC-port lane, kept in sync with the credited decompilation and co-op foundations it builds on.',
-    details: ['Downstream of tangosdev/sm64ds-decomp and SCOPIC64/sm64ds-coop-port', 'ROMs and Nintendo assets stay outside the repository', 'Working toward a cleaner native port and integration path'],
-    tags: ['C++', 'Decompilation', 'Native port', 'Upstream sync'],
-    category: 'engines',
-    url: 'https://github.com/SahilKDas/64DS-DX',
+    name: 'tangOS-Native',
+    extension: 'Lite',
+    role: 'Decomp tooling without the browser tax',
+    description: 'I’m working on a native fork of tangOS: a portable C++/Win32/TinySkia workbench for decompilation repositories.',
+    details: ['Reviewed Git operations, GitHub integration, live progress, and release checkpoints', 'Native per-monitor DPI, resumable builds, and shared Atlas state', 'The credited upstream web implementation remains the parity reference'],
+    tags: ['C++', 'Win32', 'TinySkia', 'Attributed fork'],
+    category: 'platforms',
+    url: 'https://github.com/SahilKDas/tangOS-Native',
     featured: true,
-    visual: 'port'
+    visual: 'tooling'
+  },
+  {
+    name: 'OpenShobu',
+    extension: 'USP + cani',
+    role: 'A tiny ecosystem gets real infrastructure',
+    description: 'I’m building a formal protocol/specification layer and a dependency-free Rust SDK for the abstract strategy game Shōbu.',
+    details: ['USP 1.0, SFEN state serialization, SSGF saved games, and conformance tests', 'cani: a 24-byte Rust state with C ABI and C++26 wrapper', 'Reference engines and examples across six languages'],
+    tags: ['Rust', 'Protocol design', 'C ABI', 'OpenShobu'],
+    category: 'platforms',
+    url: 'https://github.com/OpenShobu',
+    featured: true,
+    visual: 'shobu'
   },
   {
     name: 'MK7-Native',
-    extension: '#3',
-    role: 'The long-term port',
+    extension: 'active',
+    role: 'The long-term native port',
     description: 'I’m building an experimental C++26 route toward running Mario Kart 7 natively on PCs and laptops instead of hiding everything behind full-system emulation.',
-    details: ['External-ROM workflow with user-supplied game data', 'SDL3/Vulkan host plus a growing 3DS runtime layer', 'Services, input, persistent saves, and graphics are coming online piece by piece'],
-    tags: ['C++26', 'Vulkan', 'SDL3', 'Static recompilation'],
+    details: ['Scene-geometry submission and real pixel output now work', 'PICA vertex loading, texture/TEV decoding, HID, saves, and synchronized presentation', 'External-ROM workflow keeps user-supplied game data outside the repository'],
+    tags: ['C++26', 'Vulkan', 'SDL3', 'PICA200'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/MK7-Native',
-    featured: true,
     visual: 'race'
   },
   {
-    name: 'Eloi',
-    extension: '#4 / paused',
-    role: 'Waiting on Kaggle',
-    description: 'My chess-engine rabbit hole has a Rust 2024 four-player branch, but I’m not actively working on it until somebody takes on the v4.0.0 Kaggle program for me.',
-    details: ['14×14 four-player core with FFA and Teams state', 'Native GUI and three-thread baseline search', 'Kaggle-ready self-play and training scaffolding; currently paused'],
-    tags: ['Rust 2024', 'Four-player chess', 'Self-play', 'Paused'],
+    name: '64DS-DX',
+    extension: 'active',
+    role: 'The SM64DS port lane',
+    description: 'My Super Mario 64 DS PC-port lane stays synchronized with the credited decompilation and co-op foundations it builds on.',
+    details: ['Recent work integrates Tango promotions and Waluigi fifth-character support', 'ROMs and Nintendo assets stay outside the repository', 'A downstream integration project, not a claim over upstream decompilation work'],
+    tags: ['C++', 'Decompilation', 'Native port', 'Upstream sync'],
     category: 'engines',
-    url: 'https://github.com/SahilKDas/Eloi/tree/v4.0.0',
-    visual: 'chess'
+    url: 'https://github.com/SahilKDas/64DS-DX',
+    visual: 'port'
   },
   {
     name: 'LFE‑NNUE',
-    extension: 'complete',
-    role: 'The finished ecosystem',
+    extension: 'v1 + more',
+    role: 'Complete apparently meant “keep going”',
     description: 'I turned Life Engine into a native evolutionary ecosystem where organisms inherit bodies, physiology, perception, and sparse neural behavior.',
-    details: ['A major, attributed fork of MaxRobinsonTheGreat/LifeEngine', 'Inherited and mutating neural policies without scripted steering', 'Ecology, lineage, observability, and bounded long-run analytics'],
+    details: ['Native v1.0 shipped with verified Windows packaging', 'Latest work adds deterministic 2.5D habitats and elevation', 'A major, attributed fork of MaxRobinsonTheGreat/LifeEngine'],
     tags: ['C++', 'TypeScript', 'NNUE', 'Evolution'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/LFE-NNUE',
     visual: 'ecosystem'
   },
   {
-    name: 'RoseWind',
-    extension: '.rw',
-    role: 'A language I designed',
-    description: 'I made a text-based language for learning programming without hiding all the real structure.',
-    details: ['Friendly syntax, fewer training wheels', 'Built in TypeScript'],
-    tags: ['Language design', 'TypeScript', 'Education'],
-    category: 'languages',
-    url: 'https://github.com/SahilKDas/RoseWind',
-    visual: 'language'
+    name: 'Genseki',
+    extension: 'archived',
+    role: 'Alpha won the argument',
+    description: 'My Hive engine project is over. Alpha reached the level I wanted; the learned Nu line never beat it, so I archived the whole lab honestly.',
+    details: ['Native UHP engine, GUI, review tooling, and reproducible gauntlets remain public', 'Rho/Nu research is discontinued and preserved as evidence', 'Finished October 11, 2026 instead of being stretched into zombie maintenance'],
+    tags: ['C++26', 'Python', 'Hive', 'Archived'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/Genseki',
+    visual: 'hive'
   },
   {
-    name: 'ALK',
-    role: 'My JIT experiment',
-    description: 'I’m seeing what a dynamically typed, JIT-compiled language for the web can feel like.',
-    details: ['Yes, I wrote a JIT', 'A lot of web-runtime poking'],
-    tags: ['C++', 'JIT', 'Language runtime'],
-    category: 'languages',
-    url: 'https://github.com/SahilKDas/ALK',
-    visual: 'jit'
-  },
-  {
-    name: 'Colubrid',
-    extension: '.py',
-    role: 'Python, from scratch',
-    description: 'I wrote a Python interpreter in C and C++ because apparently using Python normally was too easy.',
-    details: ['Parser and interpreter guts', 'C / C++, no magic curtain'],
-    tags: ['C++', 'Interpreters', 'Python'],
-    category: 'languages',
-    url: 'https://github.com/SahilKDas/Colubrid',
-    visual: 'interpreter'
+    name: 'Eloi',
+    extension: 'paused',
+    role: 'Still waiting on Kaggle',
+    description: 'My chess-engine rabbit hole has a Rust four-player branch, but I’m not actively working on it until somebody takes on the v4.0.0 Kaggle program for me.',
+    details: ['14×14 four-player core with FFA and Teams state', 'Native GUI and three-thread baseline search', 'The last public push was October 1; paused means paused'],
+    tags: ['Rust', 'Four-player chess', 'Self-play', 'Paused'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/Eloi/tree/v4.0.0',
+    visual: 'chess'
   }
 ]
 
 const repositoryIndex = [
+  { name: 'RoseWind', type: 'Language detour', language: 'TypeScript', description: 'A text-based language for learning programming without hiding all the real structure.', url: 'https://github.com/SahilKDas/RoseWind' },
+  { name: 'ALK', type: 'JIT experiment', language: 'C++', description: 'My dynamically typed, JIT-compiled language experiment for the web.', url: 'https://github.com/SahilKDas/ALK' },
+  { name: 'Colubrid', type: 'Interpreter', language: 'C++', description: 'A source-available Python interpreter built from scratch in C and C++.', url: 'https://github.com/SahilKDas/Colubrid' },
   { name: 'SM3DL-Recomp', type: 'Starts January 2027', language: 'C++', description: 'A blunt future goal: recompile Super Mario 3D Land for native hardware. The repository is a marker, not fake progress.', url: 'https://github.com/SahilKDas/SM3DL-Recomp' },
   { name: 'HexQuoridor-3P', type: 'Useful failure', language: 'Java', description: 'A recent experiment I keep around because “plan first” is still a technical result.', url: 'https://github.com/SahilKDas/HexQuoridor-3P' },
   { name: 'FIADA', type: 'Completed chapter', language: 'C++', description: 'A deterministic top-down racer with a recurrent neural driver. I learned from it; I am not pretending it is still active.', url: 'https://github.com/SahilKDas/FIADA' },
@@ -382,9 +386,9 @@ onBeforeUnmount(() => {
       </header>
 
       <div v-blue-words class="launch-copy">
-        <Badge variant="secondary" class="launch-eyebrow">Game-playing agents · policy/value learning · native systems</Badge>
-        <h1>I build agents that<br><em>learn, compete &amp; ship.</em></h1>
-        <p>Genseki is the main quest: a Hive engine lab where neural research has to survive real rules, real opponents, and evidence I can reproduce.</p>
+        <Badge variant="secondary" class="launch-eyebrow">Neural board-game engines · native tooling · protocol ecosystems</Badge>
+        <h1>I build systems that<br><em>learn, adjudicate &amp; ship.</em></h1>
+        <p>Right now that means neural Hnefatafl research, a native decompilation workbench, Shōbu developer infrastructure, and two increasingly real native ports.</p>
         <div class="launch-actions" data-no-blue>
           <Button as="a" href="#portfolio" size="lg" class="launch-primary">
             See what I’m building
@@ -404,18 +408,18 @@ onBeforeUnmount(() => {
         </CardHeader>
         <CardContent class="console-content">
           <div class="console-rail">
-            <span class="active">01 / GENSEKI</span>
-            <span>02 / SELF-PLAY</span>
-            <span>03 / NATIVE PORTS</span>
-            <span>04 / EVIDENCE</span>
+            <span class="active">01 / SKALLAGRIM</span>
+            <span>02 / TANGOS NATIVE</span>
+            <span>03 / OPENSHOBU</span>
+            <span>04 / PORTS</span>
           </div>
           <div class="console-stage">
             <div class="stage-grid" />
-            <div class="system-node node-core"><b>GENSEKI</b><small>HIVE + POLICY/VALUE</small></div>
-            <div class="system-node node-data"><b>64DS-DX</b><small>NATIVE PORT / #2</small></div>
-            <div class="system-node node-lang"><b>MK7 / ELOI</b><small>#3 / #4 PAUSED</small></div>
+            <div class="system-node node-core"><b>SKALLAGRIM</b><small>CNN / NNUE / SEARCH</small></div>
+            <div class="system-node node-data"><b>TANGOS NATIVE</b><small>TOOLS / WIN32 / LITE</small></div>
+            <div class="system-node node-lang"><b>OPENSHOBU</b><small>USP / CANI / SSGF</small></div>
             <div class="system-path path-one"/><div class="system-path path-two"/>
-            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>43 PUBLIC REPOS</span><span>4-ITEM QUEUE</span></div>
+            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>47 PUBLIC REPOS</span><span>3 CURRENT FRONTS</span></div>
           </div>
         </CardContent>
       </Card>
@@ -442,7 +446,7 @@ onBeforeUnmount(() => {
           <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
           <p class="role">Software engineer &amp;<br>professional rabbit-hole finder</p>
-          <p class="intro">I build whatever I want—but right now I’m zooming in on policy/value learning, NNUEs, self-play, training pipelines, and agents that have to make decisions inside real game systems.</p>
+          <p class="intro">I build whatever I want. Lately that means neural board-game agents, reproducible evaluation, native research tools, protocol design, and game ports that are slowly becoming real software.</p>
 
           <div class="profile-actions">
             <a class="primary-action" href="https://github.com/SahilKDas" target="_blank" rel="noopener">
@@ -456,13 +460,13 @@ onBeforeUnmount(() => {
             </button>
           </div>
 
-          <p class="build-cadence">“Sometimes I deliver in a day; sometimes I disappear into a weeks-long project.”</p>
+          <p class="build-cadence">“Sometimes I deliver in a day; sometimes I disappear into a weeks-long project. Finished projects stay finished.”</p>
         </div>
 
         <div class="stack-block">
           <div class="stack-label"><span>Current toolbox</span><span>08 usual suspects</span></div>
           <div class="stack-pills">
-            <span>C++26</span><span>Rust</span><span>Python</span><span>TypeScript</span><span>Vulkan</span><span>CMake</span><span>Cargo</span><span>Bun</span>
+            <span>Rust</span><span>C++</span><span>Python</span><span>TypeScript</span><span>TinySkia</span><span>CMake</span><span>Cargo</span><span>Vulkan</span>
           </div>
         </div>
 
@@ -475,7 +479,7 @@ onBeforeUnmount(() => {
 
     <main class="work-pane">
       <nav v-blue-words class="main-nav" aria-label="Page sections">
-        <a href="#work">Priority queue</a>
+        <a href="#work">Current lab</a>
         <a href="#research">Neural work</a>
         <a href="#about">Me</a>
         <button class="chaos-toggle" data-no-blue type="button" :aria-pressed="chaosMode" @click.stop="chaosMode = !chaosMode">
@@ -492,10 +496,10 @@ onBeforeUnmount(() => {
       </div>
 
       <section v-blue-words class="main-intro" id="work">
-        <p class="section-kicker"><span>01</span> Current priority queue</p>
+        <p class="section-kicker"><span>01</span> Current lab</p>
         <div class="headline-row">
-          <h2>Neural systems<br>with something to prove.</h2>
-          <p>Four projects, in order. Genseki comes first; Eloi stays paused until its Kaggle program has an owner.</p>
+          <h2>Research should<br>survive the scoreboard.</h2>
+          <p>Active work first. Completed, archived, and paused projects are labeled honestly instead of pretending every repository is still a priority.</p>
         </div>
 
         <div class="filter-row" aria-label="Filter projects">
@@ -544,12 +548,27 @@ onBeforeUnmount(() => {
                 <div class="topography topo-one"/><div class="topography topo-two"/><div class="topography topo-three"/>
                 <div class="terrain-readout"><span>SEED 0826</span><span>H 847M</span></div>
               </template>
+              <template v-else-if="project.visual === 'tafl'">
+                <div class="tafl-board">
+                  <i v-for="square in 121" :key="square" :class="{ throne: square === 61, corner: [1, 11, 111, 121].includes(square) }" />
+                  <b class="tafl-piece tafl-king">♔</b><b class="tafl-piece tafl-defender defender-one"/><b class="tafl-piece tafl-defender defender-two"/><b class="tafl-piece tafl-attacker attacker-one"/><b class="tafl-piece tafl-attacker attacker-two"/>
+                </div>
+                <div class="tafl-hud"><span>CANDIDATES <b>3</b></span><span>CAMPAIGN <b>750 GAMES</b></span><span>STATUS <b>BETA</b></span></div>
+              </template>
+              <template v-else-if="project.visual === 'tooling'">
+                <div class="tool-window"><div class="tool-bar"><i/><i/><i/><span>tangOS Lite</span></div><div class="tool-tree"><b>REPOSITORY</b><span>↳ status</span><span>↳ checks</span><span>↳ atlas</span><span>↳ reviewed git</span></div><div class="tool-log"><span>checkpoint / v0.32</span><b>native parity audit</b><i>LIVE</i></div></div>
+                <div class="tooling-hud"><span>RUNTIME <b>NATIVE</b></span><span>UI <b>WIN32</b></span><span>STATE <b>CHECKPOINTED</b></span></div>
+              </template>
+              <template v-else-if="project.visual === 'shobu'">
+                <div class="shobu-boards"><div v-for="board in 4" :key="board" class="shobu-board"><i v-for="square in 16" :key="square" :class="{ stone: (square + board) % 7 === 0, white: (square + board) % 11 === 0 }"/></div></div>
+                <div class="shobu-hud"><span>SPEC <b>USP 1.0</b></span><span>STATE <b>SFEN</b></span><span>SDK <b>CANI</b></span></div>
+              </template>
               <template v-else-if="project.visual === 'hive'">
                 <div class="hive-board">
                   <i v-for="cell in 19" :key="cell" :class="[`hive-cell-${cell}`, { active: [3, 6, 8, 10, 12, 15, 17].includes(cell) }]" />
                   <b class="hive-piece hive-queen">Q</b><b class="hive-piece hive-ant">A</b><b class="hive-piece hive-beetle">B</b>
                 </div>
-                <div class="hive-hud"><span>ALPHA <b>UHP</b></span><span>RHO <b>POLICY/VALUE</b></span><span>PRIORITY <b>#1</b></span></div>
+                <div class="hive-hud"><span>ALPHA <b>UHP</b></span><span>NU / RHO <b>RETIRED</b></span><span>STATUS <b>ARCHIVED</b></span></div>
               </template>
               <template v-else-if="project.visual === 'port'">
                 <div class="ds-shell"><div class="ds-screen top"><i/><b>64</b><span>DS</span></div><div class="ds-hinge"/><div class="ds-screen bottom"><i/><i/><i/><i/></div></div>
@@ -568,7 +587,7 @@ onBeforeUnmount(() => {
               </template>
               <template v-else-if="project.visual === 'race'">
                 <div class="race-track"><i class="track-inner"/><b class="race-car car-one"/><b class="race-car car-two"/><b class="race-car car-three"/></div>
-                <div class="race-hud"><span>POLICY <b>1,011,461</b></span><span>PHYSICS <b>120 HZ</b></span><span>EVAL <b>31 / 33</b></span></div>
+                <div class="race-hud"><span>PICA <b>VERTICES</b></span><span>OUTPUT <b>PIXELS</b></span><span>DATA <b>EXTERNAL</b></span></div>
               </template>
               <template v-else-if="project.visual === 'config'">
                 <div class="config-editor"><span><b>import</b> db <b>from</b> <i>"./db.tcson"</i>;</span><span><b>export default</b> &#123;</span><span>&nbsp;&nbsp;...db,</span><span>&nbsp;&nbsp;runtime: <i>"bun"</i>,</span><span>&nbsp;&nbsp;deterministic: <em>true</em></span><span>&#125;;</span></div>
@@ -610,7 +629,7 @@ onBeforeUnmount(() => {
             <h2 id="repo-index-title">More rabbit holes.</h2>
           </div>
           <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">
-            <strong>43</strong><span>public repos and counting</span><i>See the lab ↗</i>
+            <strong>47</strong><span>public repos and counting</span><i>See the lab ↗</i>
           </a>
         </div>
 
@@ -640,18 +659,18 @@ onBeforeUnmount(() => {
         <div class="research-list">
           <article>
             <span class="research-number">R/01</span>
-            <div><h3>Can an agent learn Hive instead of faking it?</h3><p>Rho is my policy/value track: rules-grounded state, self-play evidence, training data, and experiments that stay separate from the Alpha engine.</p></div>
-            <span class="research-tag">Policy / value / self-play</span>
+            <div><h3>Can one neural engine play both roles well?</h3><p>Skallagrim makes CNN/MCTS and NNUE candidates earn promotion as both Hnefatafl attackers and defenders under the same referee.</p></div>
+            <span class="research-tag">CNN / NNUE / search</span>
           </article>
           <article>
             <span class="research-number">R/02</span>
-            <div><h3>A score is not an explanation.</h3><p>I care about controlled opponents, frozen inputs, reproducible runs, honest failures, and knowing exactly why a model was promoted.</p></div>
+            <div><h3>A score is not an explanation.</h3><p>I care about role balance, controlled opponents, frozen inputs, replay verification, timing failures, and knowing exactly why a model was promoted.</p></div>
             <span class="research-tag">Evaluation / evidence</span>
           </article>
           <article>
             <span class="research-number">R/03</span>
-            <div><h3>Can research survive contact with the whole system?</h3><p>The model still has to meet a rules engine, search, a GUI, performance limits, packaging, and users. I like owning that entire path.</p></div>
-            <span class="research-tag">Research engineering</span>
+            <div><h3>What does a tiny ecosystem need before it can grow?</h3><p>OpenShobu starts with rules, canonical state, saved games, a protocol, conformance tests, and a small SDK—then lets engines compete on top.</p></div>
+            <span class="research-tag">Protocols / infrastructure</span>
           </article>
         </div>
       </section>
@@ -661,14 +680,14 @@ onBeforeUnmount(() => {
         <div class="about-grid">
           <h2>Curious by default.<br><em>Way too into the details.</em></h2>
           <div class="about-copy">
-            <p>I started with Python, got curious about what was underneath it, and ended up in C++ and Rust building game engines, neural agents, native ports, and the infrastructure around them.</p>
+            <p>I started with Python, got curious about what was underneath it, and ended up in Rust and C++ building neural engines, protocol ecosystems, native research tools, and game ports.</p>
             <p>I will apply to <strong>Google DeepMind</strong>. Until then, I’m turning the gap between curiosity and research engineering into public, reproducible work.</p>
           </div>
         </div>
         <div class="capabilities">
-          <div><span>01</span><p>Neural<br>agents</p></div>
-          <div><span>02</span><p>Engine<br>systems</p></div>
-          <div><span>03</span><p>Native<br>ports</p></div>
+          <div><span>01</span><p>Neural<br>engines</p></div>
+          <div><span>02</span><p>Protocols &amp;<br>SDKs</p></div>
+          <div><span>03</span><p>Native<br>tooling</p></div>
           <div><span>04</span><p>Evidence &amp;<br>reproducibility</p></div>
         </div>
       </section>
