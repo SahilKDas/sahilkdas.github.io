@@ -23,12 +23,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Sahil K. Das — Neural Engines, Native Tools & Board Games',
+      title: 'Sahil K. Das — Research Engines, Open Protocols & Native Tools',
       meta: [
-        { name: 'description', content: 'I’m Sahil K. Das. I build neural board-game engines, native research tools, protocol ecosystems, and game ports with reproducible evidence.' },
+        { name: 'description', content: 'I’m Sahil K. Das. I build neural and handcrafted board-game engines, open protocol ecosystems, native tools, and reproducible experiments.' },
         { name: 'theme-color', content: '#071A12' },
-        { property: 'og:title', content: 'Sahil K. Das — Neural Engines, Native Tools & Board Games' },
-        { property: 'og:description', content: 'I build neural board-game engines, native research tools, protocol ecosystems, and game ports with reproducible evidence.' },
+        { property: 'og:title', content: 'Sahil K. Das — Research Engines, Open Protocols & Native Tools' },
+        { property: 'og:description', content: 'I build neural and handcrafted board-game engines, open protocol ecosystems, native tools, and reproducible experiments.' },
         { property: 'og:type', content: 'website' }
       ]
     }

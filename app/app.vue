@@ -96,9 +96,10 @@ const colorSets: ColorSet[] = [
 ]
 const ideaLoop = [
   'What if a neural engine had to play both sides well?',
-  'What if the protocol existed before the ecosystem needed it?',
+  'What if a tiny protocol grew into a real engine ecosystem?',
   'What if a decompilation workbench stayed native and portable?',
-  'What if every failed qualification run stayed useful?'
+  'What if every failed qualification run stayed useful?',
+  'What if shipping was allowed to end in hibernation?'
 ]
 let ideaTimer: ReturnType<typeof window.setInterval> | undefined
 let scrollFrame: number | undefined
@@ -110,21 +111,33 @@ const projects: Project[] = [
   {
     name: 'Skallagrim',
     extension: '0.5 beta',
-    role: 'The active neural-engine lab',
+    role: 'The research centerpiece',
     description: 'I’m building a Copenhagen Hnefatafl engine and research platform where three neural/search ideas have to play both attackers and defenders.',
-    details: ['Rho: CNN policy/value + MCTS · Iota/Beta: NNUE with alpha-beta or MCTS', '1,250-game audited corpus and a completed 750-game campaign', 'Experimental beta: the evidence includes timing failures and an unresolved long-soak timeout'],
-    tags: ['Rust', 'Python', 'CNN + NNUE', 'MCTS'],
+    details: ['Rho: CNN policy/value + MCTS · Iota/Beta: NNUE with alpha-beta or MCTS', '1,250-game audited corpus and a completed 750-game campaign', 'The beta timed out at ~114 minutes; an unreleased deadline fix passed a fresh two-hour soak'],
+    tags: ['Rust', 'Python', 'CNN + NNUE', 'Evidence'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/Skallagrim',
     featured: true,
     visual: 'tafl'
   },
   {
+    name: 'Sekigahara',
+    extension: 'v0.4',
+    role: 'The OpenShobu incumbent',
+    description: 'I built a handcrafted Shōbu engine on cani and USP 1.0, then made every new version earn the right to replace the last one.',
+    details: ['Iterative deepening, PVS/alpha-beta, quiescence, history, and transposition tables', 'v0.4 beat the published v0.3 by 221–173–6 across 400 fresh 50 ms games', 'Maple Studio GUI, reproducible match reports, and downloadable Windows packages'],
+    tags: ['Rust', 'Shōbu', 'Search', 'OpenShobu'],
+    category: 'engines',
+    url: 'https://github.com/OpenShobu/Sekigahara',
+    featured: true,
+    visual: 'shobu'
+  },
+  {
     name: 'tangOS-Native',
     extension: 'Lite',
     role: 'Decomp tooling without the browser tax',
     description: 'I’m working on a native fork of tangOS: a portable C++/Win32/TinySkia workbench for decompilation repositories.',
-    details: ['Reviewed Git operations, GitHub integration, live progress, and release checkpoints', 'Native per-monitor DPI, resumable builds, and shared Atlas state', 'The credited upstream web implementation remains the parity reference'],
+    details: ['Reviewed Git operations, GitHub integration, streamed verification, and release checkpoints', 'Recent work preserves drafts and durable workflow state across interrupted recovery', 'The credited upstream web implementation remains the parity reference while the native parity audit continues'],
     tags: ['C++', 'Win32', 'TinySkia', 'Attributed fork'],
     category: 'platforms',
     url: 'https://github.com/SahilKDas/tangOS-Native',
@@ -132,38 +145,37 @@ const projects: Project[] = [
     visual: 'tooling'
   },
   {
-    name: 'OpenShobu',
-    extension: 'USP + cani',
-    role: 'A tiny ecosystem gets real infrastructure',
-    description: 'I’m building a formal protocol/specification layer and a dependency-free Rust SDK for the abstract strategy game Shōbu.',
-    details: ['USP 1.0, SFEN state serialization, SSGF saved games, and conformance tests', 'cani: a 24-byte Rust state with C ABI and C++26 wrapper', 'Reference engines and examples across six languages'],
-    tags: ['Rust', 'Protocol design', 'C ABI', 'OpenShobu'],
-    category: 'platforms',
-    url: 'https://github.com/OpenShobu',
-    featured: true,
-    visual: 'shobu'
+    name: 'Eloi',
+    extension: 'v4.0.0',
+    role: 'Shipped, then hibernated',
+    description: 'I revived my chess-engine rabbit hole long enough to ship handcrafted four-player Teams as a reproducible Windows release—then froze it cleanly.',
+    details: ['Rust 2024 engine, native Win32/tiny-skia GUI, and a 160-square Red/Yellow vs Blue/Green board', 'Kaggle training is retired; Teams uses Eloi’s own handcrafted evaluator and three-thread alpha-beta search', 'v4.0.0 is released with two Windows assets and an explicit restart checklist'],
+    tags: ['Rust 2024', 'Four-player Teams', 'Windows', 'Hibernating'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.0',
+    visual: 'chess'
+  },
+  {
+    name: '64DS-DX',
+    extension: 'cooled',
+    role: 'Synchronized, not the main focus',
+    description: 'My Super Mario 64 DS PC-port lane stays downstream of—and properly credits—the decompilation and co-op projects it builds on.',
+    details: ['The latest main-branch work syncs Tango 0.9.1 and removes the earlier Waluigi integration', 'ROMs and Nintendo assets stay outside the repository', 'The repository remains public evidence, not a claim that this is my current centerpiece'],
+    tags: ['C++', 'Decompilation', 'Native port', 'Upstream sync'],
+    category: 'engines',
+    url: 'https://github.com/SahilKDas/64DS-DX',
+    visual: 'port'
   },
   {
     name: 'MK7-Native',
-    extension: 'active',
-    role: 'The long-term native port',
+    extension: 'long-term',
+    role: 'The quiet native-port bet',
     description: 'I’m building an experimental C++26 route toward running Mario Kart 7 natively on PCs and laptops instead of hiding everything behind full-system emulation.',
     details: ['Scene-geometry submission and real pixel output now work', 'PICA vertex loading, texture/TEV decoding, HID, saves, and synchronized presentation', 'External-ROM workflow keeps user-supplied game data outside the repository'],
     tags: ['C++26', 'Vulkan', 'SDL3', 'PICA200'],
     category: 'engines',
     url: 'https://github.com/SahilKDas/MK7-Native',
     visual: 'race'
-  },
-  {
-    name: '64DS-DX',
-    extension: 'active',
-    role: 'The SM64DS port lane',
-    description: 'My Super Mario 64 DS PC-port lane stays synchronized with the credited decompilation and co-op foundations it builds on.',
-    details: ['Recent work integrates Tango promotions and Waluigi fifth-character support', 'ROMs and Nintendo assets stay outside the repository', 'A downstream integration project, not a claim over upstream decompilation work'],
-    tags: ['C++', 'Decompilation', 'Native port', 'Upstream sync'],
-    category: 'engines',
-    url: 'https://github.com/SahilKDas/64DS-DX',
-    visual: 'port'
   },
   {
     name: 'LFE‑NNUE',
@@ -187,20 +199,14 @@ const projects: Project[] = [
     url: 'https://github.com/SahilKDas/Genseki',
     visual: 'hive'
   },
-  {
-    name: 'Eloi',
-    extension: 'paused',
-    role: 'Still waiting on Kaggle',
-    description: 'My chess-engine rabbit hole has a Rust four-player branch, but I’m not actively working on it until somebody takes on the v4.0.0 Kaggle program for me.',
-    details: ['14×14 four-player core with FFA and Teams state', 'Native GUI and three-thread baseline search', 'The last public push was October 1; paused means paused'],
-    tags: ['Rust', 'Four-player chess', 'Self-play', 'Paused'],
-    category: 'engines',
-    url: 'https://github.com/SahilKDas/Eloi/tree/v4.0.0',
-    visual: 'chess'
-  }
 ]
 
 const repositoryIndex = [
+  { name: 'cani', type: 'Shōbu SDK', language: 'Rust', description: 'A dependency-free 24-byte Shōbu state, allocation-free bot APIs, C ABI, C++26 wrapper, SFEN, SSGF, and USP.', url: 'https://github.com/OpenShobu/cani' },
+  { name: 'Universal Shōbu Protocol', type: 'Open standard', language: 'Multi-language', description: 'The formal rules, canonical state, saved-game, protocol, and conformance layer underneath OpenShobu engines.', url: 'https://github.com/OpenShobu/Universal-Shobu-Protocol-Specifications' },
+  { name: 'Sugar_Gliders', type: 'Messaging detour', language: 'Rust', description: 'A maple-themed native instant-messaging and VoIP experiment with authenticated accounts and encrypted media.', url: 'https://github.com/SahilKDas/Sugar_Gliders' },
+  { name: 'ferromine-emu', type: 'Starts February 2027', language: 'Rust', description: 'A deliberately empty Apache-2.0 marker for a from-scratch Original Xbox emulator—not fake progress.', url: 'https://github.com/SahilKDas/ferromine-emu' },
+  { name: 'zelda-steve-bridge', type: 'Archived prototype', language: 'C++', description: 'An unfinished Ocarina of Mine / Ship of Harkinian integration experiment, archived as evidence.', url: 'https://github.com/SahilKDas/zelda-steve-bridge' },
   { name: 'RoseWind', type: 'Language detour', language: 'TypeScript', description: 'A text-based language for learning programming without hiding all the real structure.', url: 'https://github.com/SahilKDas/RoseWind' },
   { name: 'ALK', type: 'JIT experiment', language: 'C++', description: 'My dynamically typed, JIT-compiled language experiment for the web.', url: 'https://github.com/SahilKDas/ALK' },
   { name: 'Colubrid', type: 'Interpreter', language: 'C++', description: 'A source-available Python interpreter built from scratch in C and C++.', url: 'https://github.com/SahilKDas/Colubrid' },
@@ -386,9 +392,9 @@ onBeforeUnmount(() => {
       </header>
 
       <div v-blue-words class="launch-copy">
-        <Badge variant="secondary" class="launch-eyebrow">Neural board-game engines · native tooling · protocol ecosystems</Badge>
-        <h1>I build systems that<br><em>learn, adjudicate &amp; ship.</em></h1>
-        <p>Right now that means neural Hnefatafl research, a native decompilation workbench, Shōbu developer infrastructure, and two increasingly real native ports.</p>
+        <Badge variant="secondary" class="launch-eyebrow">Neural research · handcrafted engines · native tooling</Badge>
+        <h1>I build systems that<br><em>learn, compete &amp; conclude.</em></h1>
+        <p>Right now that means Hnefatafl research, a benchmarked Shōbu engine ecosystem, a native decompilation workbench, and finished projects I’m willing to let hibernate.</p>
         <div class="launch-actions" data-no-blue>
           <Button as="a" href="#portfolio" size="lg" class="launch-primary">
             See what I’m building
@@ -409,17 +415,17 @@ onBeforeUnmount(() => {
         <CardContent class="console-content">
           <div class="console-rail">
             <span class="active">01 / SKALLAGRIM</span>
-            <span>02 / TANGOS NATIVE</span>
-            <span>03 / OPENSHOBU</span>
-            <span>04 / PORTS</span>
+            <span>02 / SEKIGAHARA</span>
+            <span>03 / TANGOS NATIVE</span>
+            <span>04 / ELOI V4</span>
           </div>
           <div class="console-stage">
             <div class="stage-grid" />
             <div class="system-node node-core"><b>SKALLAGRIM</b><small>CNN / NNUE / SEARCH</small></div>
-            <div class="system-node node-data"><b>TANGOS NATIVE</b><small>TOOLS / WIN32 / LITE</small></div>
-            <div class="system-node node-lang"><b>OPENSHOBU</b><small>USP / CANI / SSGF</small></div>
+            <div class="system-node node-data"><b>SEKIGAHARA</b><small>SHŌBU / PVS / V0.4</small></div>
+            <div class="system-node node-lang"><b>TANGOS NATIVE</b><small>TOOLS / WIN32 / LITE</small></div>
             <div class="system-path path-one"/><div class="system-path path-two"/>
-            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>47 PUBLIC REPOS</span><span>3 CURRENT FRONTS</span></div>
+            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>50 PUBLIC REPOS</span><span>3 CURRENT FRONTS</span></div>
           </div>
         </CardContent>
       </Card>
@@ -446,7 +452,7 @@ onBeforeUnmount(() => {
           <p class="eyebrow"><span>Restlessly curious.</span><b>×</b><span>Constantly building.</span></p>
           <h1>Sahil K.<br><em>Das.</em></h1>
           <p class="role">Software engineer &amp;<br>professional rabbit-hole finder</p>
-          <p class="intro">I build whatever I want. Lately that means neural board-game agents, reproducible evaluation, native research tools, protocol design, and game ports that are slowly becoming real software.</p>
+          <p class="intro">I build whatever I want. Lately that means neural board-game agents, handcrafted search, reproducible evaluation, native tools, and knowing when a project is actually finished.</p>
 
           <div class="profile-actions">
             <a class="primary-action" href="https://github.com/SahilKDas" target="_blank" rel="noopener">
@@ -460,7 +466,7 @@ onBeforeUnmount(() => {
             </button>
           </div>
 
-          <p class="build-cadence">“Sometimes I deliver in a day; sometimes I disappear into a weeks-long project. Finished projects stay finished.”</p>
+          <p class="build-cadence">“Sometimes I deliver in a day; sometimes I disappear into weeks-long builds. Finished projects are allowed to stay finished.”</p>
         </div>
 
         <div class="stack-block">
@@ -561,7 +567,7 @@ onBeforeUnmount(() => {
               </template>
               <template v-else-if="project.visual === 'shobu'">
                 <div class="shobu-boards"><div v-for="board in 4" :key="board" class="shobu-board"><i v-for="square in 16" :key="square" :class="{ stone: (square + board) % 7 === 0, white: (square + board) % 11 === 0 }"/></div></div>
-                <div class="shobu-hud"><span>SPEC <b>USP 1.0</b></span><span>STATE <b>SFEN</b></span><span>SDK <b>CANI</b></span></div>
+                <div class="shobu-hud"><span>ENGINE <b>V0.4</b></span><span>INCUMBENT <b>221–173–6</b></span><span>PROTO <b>USP 1.0</b></span></div>
               </template>
               <template v-else-if="project.visual === 'hive'">
                 <div class="hive-board">
@@ -583,7 +589,7 @@ onBeforeUnmount(() => {
                   <b class="chess-piece piece-white-king">♔</b>
                   <b class="chess-piece piece-white-knight">♘</b>
                 </div>
-                <div class="chess-hud"><span>BRANCH <b>V4.0.0</b></span><span>BOARD <b>14×14</b></span><span>STATUS <b>PAUSED</b></span></div>
+                <div class="chess-hud"><span>RELEASE <b>V4.0.0</b></span><span>BOARD <b>160 SQ</b></span><span>STATUS <b>HIBERNATING</b></span></div>
               </template>
               <template v-else-if="project.visual === 'race'">
                 <div class="race-track"><i class="track-inner"/><b class="race-car car-one"/><b class="race-car car-two"/><b class="race-car car-three"/></div>
@@ -629,7 +635,7 @@ onBeforeUnmount(() => {
             <h2 id="repo-index-title">More rabbit holes.</h2>
           </div>
           <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">
-            <strong>47</strong><span>public repos and counting</span><i>See the lab ↗</i>
+            <strong>50</strong><span>public repos and counting</span><i>See the lab ↗</i>
           </a>
         </div>
 
@@ -650,7 +656,7 @@ onBeforeUnmount(() => {
         </div>
       </section>
       <section v-blue-words class="research-section" id="research">
-        <p class="section-kicker"><span>02</span> Neural work, zoomed in</p>
+          <p class="section-kicker"><span>02</span> Research &amp; engines, zoomed in</p>
         <div class="research-heading">
           <h2>Questions I keep<br>losing sleep over.</h2>
           <div class="signal"><i/><span>3 rabbit holes open</span></div>
@@ -669,8 +675,8 @@ onBeforeUnmount(() => {
           </article>
           <article>
             <span class="research-number">R/03</span>
-            <div><h3>What does a tiny ecosystem need before it can grow?</h3><p>OpenShobu starts with rules, canonical state, saved games, a protocol, conformance tests, and a small SDK—then lets engines compete on top.</p></div>
-            <span class="research-tag">Protocols / infrastructure</span>
+            <div><h3>What does a tiny ecosystem need before it can compete?</h3><p>OpenShobu now has the whole ladder: canonical rules and state, a small allocation-conscious SDK, a protocol, and Sekigahara releases that have to beat frozen incumbents.</p></div>
+            <span class="research-tag">Protocols / search / matches</span>
           </article>
         </div>
       </section>
@@ -680,7 +686,7 @@ onBeforeUnmount(() => {
         <div class="about-grid">
           <h2>Curious by default.<br><em>Way too into the details.</em></h2>
           <div class="about-copy">
-            <p>I started with Python, got curious about what was underneath it, and ended up in Rust and C++ building neural engines, protocol ecosystems, native research tools, and game ports.</p>
+            <p>I started with Python, got curious about what was underneath it, and ended up in Rust and C++ building neural engines, handcrafted search, protocol ecosystems, native tools, and game ports.</p>
             <p>I will apply to <strong>Google DeepMind</strong>. Until then, I’m turning the gap between curiosity and research engineering into public, reproducible work.</p>
           </div>
         </div>
