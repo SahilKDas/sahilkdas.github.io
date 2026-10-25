@@ -3,6 +3,18 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
+const {
+  visibleActivity,
+  expanded: activityExpanded,
+  canExpand: canExpandActivity,
+  loading: activityLoading,
+  sourceLabel: activitySourceLabel,
+  lastUpdated: activityLastUpdated,
+  publicRepoCount,
+  formatActivityDate,
+  toggleExpanded: toggleActivityExpanded
+} = useGitHubActivity()
+
 const blueShades = ['#38bdf8', '#60a5fa', '#22d3ee', '#93c5fd', '#818cf8', '#67e8f9', '#0ea5e9']
 const blueWordListeners = new WeakMap<HTMLElement, (event: PointerEvent) => void>()
 
@@ -425,7 +437,7 @@ onBeforeUnmount(() => {
             <div class="system-node node-data"><b>SEKIGAHARA</b><small>SHŌBU / PVS / V0.4</small></div>
             <div class="system-node node-lang"><b>TANGOS NATIVE</b><small>TOOLS / WIN32 / LITE</small></div>
             <div class="system-path path-one"/><div class="system-path path-two"/>
-            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>50 PUBLIC REPOS</span><span>3 CURRENT FRONTS</span></div>
+            <div class="stage-readout"><span>LAB / VERY ACTIVE</span><span>{{ publicRepoCount }} PUBLIC REPOS</span><span>3 CURRENT FRONTS</span></div>
           </div>
         </CardContent>
       </Card>
@@ -485,6 +497,7 @@ onBeforeUnmount(() => {
 
     <main class="work-pane">
       <nav v-blue-words class="main-nav" aria-label="Page sections">
+        <a href="#activity">Activity</a>
         <a href="#work">Current lab</a>
         <a href="#research">Neural work</a>
         <a href="#about">Me</a>
@@ -500,6 +513,104 @@ onBeforeUnmount(() => {
           <span aria-hidden="true">ACTIVE THOUGHT_{{ String(activeIdea + 1).padStart(2, '0') }} — {{ ideaLoop[activeIdea] }}</span>
         </div>
       </div>
+
+      <section id="activity" class="activity-section" aria-labelledby="activity-title">
+        <div class="activity-heading">
+          <div v-blue-words>
+            <p class="section-kicker"><span>00</span> Public activity</p>
+            <h2 id="activity-title">What changed while<br>I was building?</h2>
+            <p>I keep the useful public motion here: pushes, releases, new branches or repositories, and pull requests. No star spam, no deleted-branch confetti.</p>
+          </div>
+          <div class="activity-source" data-no-blue aria-live="polite">
+            <span class="activity-source-badge"><i :class="{ loading: activityLoading }" />{{ activitySourceLabel }}</span>
+            <span>Updated <time :datetime="activityLastUpdated">{{ formatActivityDate(activityLastUpdated) }}</time></span>
+          </div>
+        </div>
+
+        <div class="activity-lanes">
+          <article class="activity-lane activity-lane-primary" aria-labelledby="openshobu-lane-title">
+            <header>
+              <div>
+                <p class="activity-lane-label">Lane A / priority signal</p>
+                <h3 id="openshobu-lane-title">OpenShobu now</h3>
+              </div>
+              <a href="https://github.com/OpenShobu" target="_blank" rel="noopener">Open the org ↗</a>
+            </header>
+            <p class="activity-lane-intro">Sekigahara, cani, and USP move as one small engine ecosystem, so their signal stays together and stays first.</p>
+            <TransitionGroup name="activity-list" tag="div" class="activity-list">
+              <a
+                v-for="item in visibleActivity.openShobu"
+                :key="item.id"
+                class="activity-item"
+                :href="item.href"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="activity-kind">{{ item.kind }}</span>
+                <span class="activity-item-copy">
+                  <b>{{ item.repo }}</b>
+                  <strong>{{ item.title }}</strong>
+                  <small>{{ item.detail }}</small>
+                </span>
+                <time :datetime="item.timestamp">{{ formatActivityDate(item.timestamp) }}</time>
+                <i class="activity-arrow" aria-hidden="true">↗</i>
+              </a>
+            </TransitionGroup>
+            <p v-if="!visibleActivity.openShobu.length" class="activity-empty">No supported OpenShobu events are available right now.</p>
+          </article>
+
+          <article class="activity-lane" aria-labelledby="lab-lane-title">
+            <header>
+              <div>
+                <p class="activity-lane-label">Lane B / everything else</p>
+                <h3 id="lab-lane-title">Rest of the lab</h3>
+              </div>
+              <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">All repositories ↗</a>
+            </header>
+            <p class="activity-lane-intro">The latest public motion across my other repositories, newest first.</p>
+            <TransitionGroup name="activity-list" tag="div" class="activity-list">
+              <a
+                v-for="item in visibleActivity.other"
+                :key="item.id"
+                class="activity-item"
+                :href="item.href"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="activity-kind">{{ item.kind }}</span>
+                <span class="activity-item-copy">
+                  <b>{{ item.repo }}</b>
+                  <strong>{{ item.title }}</strong>
+                  <small>{{ item.detail }}</small>
+                </span>
+                <time :datetime="item.timestamp">{{ formatActivityDate(item.timestamp) }}</time>
+                <i class="activity-arrow" aria-hidden="true">↗</i>
+              </a>
+            </TransitionGroup>
+            <p v-if="!visibleActivity.other.length" class="activity-empty">No supported personal events are available right now.</p>
+          </article>
+        </div>
+
+        <div class="activity-actions" data-no-blue>
+          <button
+            v-if="canExpandActivity"
+            type="button"
+            :aria-expanded="activityExpanded"
+            @click="toggleActivityExpanded"
+          >
+            {{ activityExpanded ? 'Show the first 8' : 'Expand to 16 events' }} <span>{{ activityExpanded ? '↑' : '↓' }}</span>
+          </button>
+        </div>
+
+        <aside class="collaborator-strip" aria-label="Open-source collaborator links">
+          <div v-blue-words><span>Want into the weird corner?</span><strong>Build with me, or just inspect the evidence.</strong></div>
+          <nav aria-label="Collaboration destinations">
+            <a href="https://github.com/OpenShobu" target="_blank" rel="noopener">OpenShobu ↗</a>
+            <a href="https://github.com/SahilKDas/Skallagrim" target="_blank" rel="noopener">Skallagrim ↗</a>
+            <a href="https://discord.com/app" target="_blank" rel="noopener" title="Open Discord and add lordhank2">Discord · lordhank2 ↗</a>
+          </nav>
+        </aside>
+      </section>
 
       <section v-blue-words class="main-intro" id="work">
         <p class="section-kicker"><span>01</span> Current lab</p>
@@ -635,7 +746,7 @@ onBeforeUnmount(() => {
             <h2 id="repo-index-title">More rabbit holes.</h2>
           </div>
           <a href="https://github.com/SahilKDas?tab=repositories" target="_blank" rel="noopener">
-            <strong>50</strong><span>public repos and counting</span><i>See the lab ↗</i>
+            <strong>{{ publicRepoCount }}</strong><span>public repos and counting</span><i>See the lab ↗</i>
           </a>
         </div>
 
