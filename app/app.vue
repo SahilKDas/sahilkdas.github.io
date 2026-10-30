@@ -158,13 +158,13 @@ const projects: Project[] = [
   },
   {
     name: 'Eloi',
-    extension: 'v4.0.0',
-    role: 'Shipped, then hibernated',
-    description: 'I revived my chess-engine rabbit hole long enough to ship handcrafted four-player Teams as a reproducible Windows release—then froze it cleanly.',
-    details: ['Rust 2024 engine, native Win32/tiny-skia GUI, and a 160-square Red/Yellow vs Blue/Green board', 'Kaggle training is retired; Teams uses Eloi’s own handcrafted evaluator and three-thread alpha-beta search', 'v4.0.0 is released with two Windows assets and an explicit restart checklist'],
-    tags: ['Rust 2024', 'Four-player Teams', 'Windows', 'Hibernating'],
+    extension: 'v4.0.1',
+    role: 'Two months old, briefly awake',
+    description: 'I woke Eloi up for a two-month anniversary patch: Watch Eloi Think exposes completed search work without pretending telemetry is a strength upgrade.',
+    details: ['Live depth, team-relative evaluation, nodes, elapsed time, and a seat-labelled principal variation from the existing search', 'A Show suggestion toggle reveals the current legal root move without playing it, while Chess ↔ Teams navigation preserves both boards', 'No rules, training, donor, budget, pruning, evaluation, or strength change; Standard still uses the pinned Caissa 2.0 worker'],
+    tags: ['Rust 2024', 'Four-player Teams', 'Search telemetry', 'v4.0.1'],
     category: 'engines',
-    url: 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.0',
+    url: 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.1',
     visual: 'chess'
   },
   {
@@ -700,7 +700,7 @@ onBeforeUnmount(() => {
                   <b class="chess-piece piece-white-king">♔</b>
                   <b class="chess-piece piece-white-knight">♘</b>
                 </div>
-                <div class="chess-hud"><span>RELEASE <b>V4.0.0</b></span><span>BOARD <b>160 SQ</b></span><span>STATUS <b>HIBERNATING</b></span></div>
+                <div class="chess-hud"><span>RELEASE <b>V4.0.1</b></span><span>BOARD <b>160 SQ</b></span><span>STATUS <b>PATCHED</b></span></div>
               </template>
               <template v-else-if="project.visual === 'race'">
                 <div class="race-track"><i class="track-inner"/><b class="race-car car-one"/><b class="race-car car-two"/><b class="race-car car-three"/></div>
