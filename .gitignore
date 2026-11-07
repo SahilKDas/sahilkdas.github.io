@@ -1,6 +1,7 @@
-# Nuxt build output
+# Build output
 .nuxt/
 .output/
+.astro/
 dist/
 .data/
 .cache/

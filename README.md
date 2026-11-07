@@ -1,6 +1,6 @@
-# Me
+# Sahil K. Das — Portfolio
 
-A Nuxt 4 portfolio for me!
+A static-first Astro portfolio for my systems, engine, and neural-network work.
 
 ## Development
 
@@ -9,19 +9,13 @@ npm install
 npm run dev
 ```
 
-## Production Node server
-
-Build the Nitro Node server and start it in production mode:
+## Production
 
 ```bash
 npm run build
-npm start
+npm run preview
 ```
 
-The server listens on port `3000` by default. Set `PORT` and `HOST` to override it.
+The production site is emitted to `dist/`. Every push to `main` builds and deploys that directory through GitHub Pages.
 
-## GitHub Pages
-
-Every push to `main` runs the Pages workflow, creates a static build using Nitro's `github_pages` preset, and deploys `.output/public`.
-
-Go check out [sahilkdas.github.io](https://sahilkdas.github.io/)!
+[sahilkdas.github.io](https://sahilkdas.github.io/)

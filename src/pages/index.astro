@@ -1,0 +1,156 @@
+---
+import '../styles/global.css'
+
+const projects = [
+  { id: 'battle', name: 'Battle Bound DX', type: 'Native runtime', status: 'Building now', line: 'I’m rebuilding a browser game as a compact C++26 and Vulkan runtime.', stack: ['C++26', 'Vulkan', 'Win32'], href: 'https://github.com/SahilKDas/Battle-Bound-DX', accent: '#63b3ff' },
+  { id: 'lfe', name: 'LFE-NNUE', type: 'Artificial life', status: 'Researching', line: 'A deterministic world where neural creatures inherit, mutate, and compete.', stack: ['C++23', 'Skia', 'NNUE'], href: 'https://github.com/SahilKDas/LFE-NNUE', accent: '#7d8cff' },
+  { id: 'kinoko', name: 'KinokoDS', type: 'Physics + RL', status: 'Early work', line: 'Mario Kart DS physics, reconstructed as a headless learning environment.', stack: ['C++26', 'Physics', 'RL'], href: 'https://github.com/SahilKDas/KinokoDS', accent: '#56d8ff' },
+  { id: 'open-shobu', name: 'OpenShobu', type: 'Open ecosystem', status: 'In the open', line: 'Engines, state formats, and one protocol for better Shobu research.', stack: ['Rust', 'C++', 'Protocols'], href: 'https://github.com/OpenShobu', accent: '#5de2c2' },
+  { id: 'eloi', name: 'Eloi', type: 'Neural chess', status: 'v4.0.1', line: 'A chess interface that makes completed search work easier to inspect.', stack: ['Rust', 'Search', 'Telemetry'], href: 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.1', accent: '#bd8cff' }
+]
+
+const snapshot = [
+  { kind: 'push', repo: 'Battle-Bound-DX', detail: 'Pushed to main', href: 'https://github.com/SahilKDas/Battle-Bound-DX' },
+  { kind: 'push', repo: 'LFE-NNUE', detail: 'Pushed to main', href: 'https://github.com/SahilKDas/LFE-NNUE' },
+  { kind: 'release', repo: 'Eloi', detail: 'Published v4.0.1', href: 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.1' }
+]
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#020711" />
+    <meta name="description" content="I’m Sahil K. Das. I build neural engines, native runtimes, game systems, and open protocols." />
+    <meta property="og:title" content="Sahil K. Das — Systems & Neural Experiments" />
+    <meta property="og:description" content="Neural engines, native runtimes, game physics, and open protocols—built from first principles." />
+    <meta property="og:type" content="website" />
+    <title>Sahil K. Das — Systems & Neural Experiments</title>
+  </head>
+  <body>
+    <div class="site" data-site>
+      <a class="skip" href="#work">Skip to work</a>
+
+      <header class="nav-wrap">
+        <nav class="nav" aria-label="Primary navigation">
+          <a class="brand" href="#top"><span>SK</span>Sahil K. Das</a>
+          <div class="nav-center"><a href="#work">Work</a><a href="#about">About</a></div>
+          <a class="nav-github" href="https://github.com/SahilKDas" target="_blank" rel="noopener">GitHub <span>↗</span></a>
+        </nav>
+      </header>
+
+      <main>
+        <section id="top" class="hero">
+          <div class="liquid liquid-a" aria-hidden="true"></div>
+          <div class="liquid liquid-b" aria-hidden="true"></div>
+          <div class="hero-copy">
+            <p class="eyebrow"><i></i> Independent systems lab</p>
+            <h1>I build systems<br /><span>that refuse to be boring.</span></h1>
+            <p class="hero-text">Neural engines, native runtimes, game physics, and open protocols—built from first principles.</p>
+            <div class="hero-actions"><a class="button button-primary" href="#work">See the work</a><a class="button button-secondary" href="https://github.com/SahilKDas" target="_blank" rel="noopener">Explore <span data-repo-count>52</span> repos</a></div>
+          </div>
+
+          <div class="hero-window" aria-label="Current project">
+            <div class="window-bar"><span class="traffic"><i></i><i></i><i></i></span><span>current.project</span><span>01</span></div>
+            <div class="window-body"><span class="window-label">Right now</span><h2>Battle<br />Bound <em>DX</em></h2><p>Browser game → native runtime</p><a href="https://github.com/SahilKDas/Battle-Bound-DX" target="_blank" rel="noopener">Open project <span>↗</span></a></div>
+            <div class="window-meta"><span>C++26</span><span>Vulkan</span><span>Active</span></div>
+          </div>
+          <a class="scroll" href="#work"><span>Scroll</span><i></i></a>
+        </section>
+
+        <section id="work" class="work shell" aria-labelledby="work-title">
+          <div class="section-head"><p>Selected work</p><h2 id="work-title">A few things<br />I care about now.</h2></div>
+          <div class="workbench">
+            <div class="project-tabs" role="tablist" aria-label="Selected projects">
+              {projects.map((project, index) => (
+                <button type="button" role="tab" aria-selected={index === 0 ? 'true' : 'false'} aria-controls="project-panel" data-project={JSON.stringify(project)} class={index === 0 ? 'active' : ''}>
+                  <span>{String(index + 1).padStart(2, '0')}</span><strong>{project.name}</strong><small>{project.type}</small><i style={`background:${project.accent}`}></i>
+                </button>
+              ))}
+            </div>
+            <article id="project-panel" class="project-panel" role="tabpanel" style={`--accent:${projects[0].accent}`}>
+              <div class="panel-top"><span data-project-type>{projects[0].type}</span><span class="status"><i></i><span data-project-status>{projects[0].status}</span></span></div>
+              <h3 data-project-name>{projects[0].name}</h3>
+              <p data-project-line>{projects[0].line}</p>
+              <div class="panel-bottom"><div class="stack" data-project-stack>{projects[0].stack.map(item => <span>{item}</span>)}</div><a data-project-link href={projects[0].href} target="_blank" rel="noopener">View on GitHub <span>↗</span></a></div>
+              <div class="panel-orb" aria-hidden="true"><span data-project-letter>B</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="signal shell" aria-labelledby="signal-title">
+          <div class="signal-head"><div><p>Live signal</p><h2 id="signal-title">Still moving.</h2></div><span><i></i><span data-source>Audited snapshot</span></span></div>
+          <div class="signal-list" data-activity-list>
+            {snapshot.map(item => <a href={item.href} target="_blank" rel="noopener"><span>{item.kind}</span><strong>{item.repo}</strong><small>{item.detail}</small><i>↗</i></a>)}
+          </div>
+        </section>
+
+        <section id="about" class="about shell" aria-labelledby="about-title">
+          <p class="eyebrow">No fixed lane</p>
+          <h2 id="about-title">Restlessly curious.<br /><span>Constantly building.</span></h2>
+          <p>I treat GitHub like a working lab. Sometimes I ship in a day; sometimes I disappear into a month-long build. Every repository starts with the same question: <strong>what if?</strong></p>
+          <div class="about-line"><span>I will apply to Google DeepMind.</span><span>Until then, I’m building the evidence.</span></div>
+        </section>
+      </main>
+
+      <footer class="footer shell">
+        <div><span>Open to work and difficult problems.</span><h2>Let’s build something<br />worth measuring.</h2></div>
+        <div class="footer-links"><a href="https://github.com/SahilKDas" target="_blank" rel="noopener">GitHub ↗</a><a href="https://github.com/OpenShobu" target="_blank" rel="noopener">OpenShobu ↗</a><button type="button" data-copy>Discord: lordhank2</button></div>
+        <div class="footer-base"><span>© {new Date().getFullYear()} Sahil K. Das</span><a href="#top">Back to top ↑</a></div>
+      </footer>
+    </div>
+
+    <script>
+      type Project = { name: string; type: string; status: string; line: string; stack: string[]; href: string; accent: string }
+      const site = document.querySelector<HTMLElement>('[data-site]')
+      const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-project]')]
+      const panel = document.querySelector<HTMLElement>('#project-panel')
+      const setText = (selector: string, value: string) => { const node = document.querySelector(selector); if (node) node.textContent = value }
+      const safeGitHubUrl = (value: string) => { try { const url = new URL(value); return url.protocol === 'https:' && url.hostname === 'github.com' ? url.toString() : 'https://github.com/SahilKDas' } catch { return 'https://github.com/SahilKDas' } }
+
+      tabs.forEach(tab => tab.addEventListener('click', () => {
+        const project = JSON.parse(tab.dataset.project || '{}') as Project
+        tabs.forEach(item => { item.classList.toggle('active', item === tab); item.setAttribute('aria-selected', String(item === tab)) })
+        panel?.classList.add('changing')
+        window.setTimeout(() => {
+          setText('[data-project-type]', project.type); setText('[data-project-status]', project.status); setText('[data-project-name]', project.name); setText('[data-project-line]', project.line); setText('[data-project-letter]', project.name.slice(0, 1))
+          const stack = document.querySelector('[data-project-stack]'); if (stack) { stack.replaceChildren(...project.stack.map(value => { const chip = document.createElement('span'); chip.textContent = value; return chip })) }
+          const link = document.querySelector<HTMLAnchorElement>('[data-project-link]'); if (link) link.href = safeGitHubUrl(project.href)
+          panel?.style.setProperty('--accent', project.accent); panel?.classList.remove('changing')
+        }, 150)
+      }))
+
+      let frame = 0
+      window.addEventListener('pointermove', event => {
+        if (!site || !matchMedia('(pointer:fine)').matches) return
+        cancelAnimationFrame(frame); frame = requestAnimationFrame(() => { site.style.setProperty('--x', `${event.clientX}px`); site.style.setProperty('--y', `${event.clientY}px`) })
+      }, { passive: true })
+
+      document.querySelector<HTMLButtonElement>('[data-copy]')?.addEventListener('click', async event => {
+        const button = event.currentTarget as HTMLButtonElement
+        try { await navigator.clipboard.writeText('lordhank2'); button.textContent = 'Copied'; window.setTimeout(() => { button.textContent = 'Discord: lordhank2' }, 1600) } catch { button.textContent = 'lordhank2' }
+      })
+
+      const controller = new AbortController(); const timeout = window.setTimeout(() => controller.abort(), 5000)
+      Promise.all([
+        fetch('https://api.github.com/users/SahilKDas/events/public?per_page=20', { signal: controller.signal }).then(response => response.ok ? response.json() : Promise.reject()),
+        fetch('https://api.github.com/users/SahilKDas', { signal: controller.signal }).then(response => response.ok ? response.json() : Promise.reject())
+      ]).then(([events, profile]) => {
+        if (Number.isInteger(profile?.public_repos)) setText('[data-repo-count]', String(profile.public_repos))
+        const supported = Array.isArray(events) ? events.filter(event => ['PushEvent', 'ReleaseEvent', 'CreateEvent'].includes(event?.type)).slice(0, 3) : []
+        const list = document.querySelector('[data-activity-list]')
+        if (list && supported.length) {
+          list.replaceChildren(...supported.map(event => {
+            const repo = String(event.repo?.name || '').split('/')[1] || 'Repository'
+            const kind = event.type === 'ReleaseEvent' ? 'release' : event.type === 'CreateEvent' ? 'create' : 'push'
+            const detail = event.type === 'ReleaseEvent' ? `Published ${event.payload?.release?.tag_name || 'a release'}` : event.type === 'CreateEvent' ? `Created ${event.payload?.ref_type || 'repository'}` : `Pushed to ${String(event.payload?.ref || 'main').replace('refs/heads/', '')}`
+            const anchor = document.createElement('a'); anchor.href = safeGitHubUrl(`https://github.com/${event.repo?.name || 'SahilKDas'}`); anchor.target = '_blank'; anchor.rel = 'noopener'
+            for (const [tag, text] of [['span', kind], ['strong', repo], ['small', detail], ['i', '↗']] as const) { const node = document.createElement(tag); node.textContent = text; anchor.append(node) }
+            return anchor
+          })); setText('[data-source]', 'Live GitHub')
+        }
+      }).catch(() => {}).finally(() => clearTimeout(timeout))
+    </script>
+  </body>
+</html>

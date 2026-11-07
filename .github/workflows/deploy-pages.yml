@@ -1,4 +1,4 @@
-name: Deploy Nuxt portfolio to GitHub Pages
+name: Deploy Astro portfolio to GitHub Pages
 
 on:
   push:
@@ -33,13 +33,13 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
-      - name: Build static Nuxt site
-        run: npm run build:pages
+      - name: Build static Astro site
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: .output/public
+          path: dist
 
   deploy:
     environment:
