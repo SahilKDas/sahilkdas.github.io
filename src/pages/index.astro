@@ -1,35 +1,38 @@
 ---
 import { Image } from 'astro:assets'
-import '@fontsource-variable/space-grotesk'
-import '@fontsource-variable/jetbrains-mono'
-import ocean from '../assets/ocean.jpg'
+import 'lenis/dist/lenis.css'
 import repos from '../data/repos.json'
+import portalSky from '../assets/cinema/portal/sky.png'
+import portalLandscape from '../assets/cinema/portal/landscape.png'
+import portalArchitecture from '../assets/cinema/portal/architecture.png'
+import portalForeground from '../assets/cinema/portal/foreground.png'
+import fieldSky from '../assets/cinema/field/sky.png'
+import fieldMist from '../assets/cinema/field/mist.png'
+import fieldFlora from '../assets/cinema/field/flora.png'
+import fieldGrass from '../assets/cinema/field/grass.png'
+import abyssDeepfield from '../assets/cinema/abyss/deepfield.png'
+import abyssDisc from '../assets/cinema/abyss/disc.png'
 import '../styles/global.css'
 
-type Repo = typeof repos[number]
-const featured = repos.find(repo => repo.name === 'Battle-Bound-DX') ?? repos[0] as Repo
 const categories = ['All', 'Systems', 'Engines', 'Languages', 'Games', 'Tools', 'Web', 'Experiments']
 const counts = Object.fromEntries(categories.map(category => [category, category === 'All' ? repos.length : repos.filter(repo => repo.category === category).length]))
-const interests = [
-  ['Neural systems', 'Neuroevolution, NNUE evaluation, reinforcement learning, and observable search.'],
-  ['Native reconstruction', 'Reimplementing game systems and browser software as compact native runtimes.'],
-  ['Board-game engines', 'Search, evaluation, protocols, match infrastructure, and reproducible testing.'],
-  ['Graphics architecture', 'Vulkan, Skia, rendering pipelines, and lower-level visual systems.'],
-  ['Emulation + decompilation', 'Understanding machines and games by rebuilding the layers beneath them.'],
-  ['Language toolchains', 'Interpreters, JIT experiments, configuration formats, and educational languages.'],
-  ['Open infrastructure', 'Shared SDKs, protocols, conformance layers, and tools collaborators can extend.'],
-  ['Procedural worlds', 'Terrain, ecosystems, simulation, game physics, and emergent behavior.']
-]
-const fallbackActivity = [
-  ['push', 'SahilKDas/LFE-NNUE', 'main', 'https://github.com/SahilKDas/LFE-NNUE'],
-  ['push', 'SahilKDas/Battle-Bound-DX', 'main', 'https://github.com/SahilKDas/Battle-Bound-DX'],
-  ['push', 'SahilKDas/KinokoDS', 'main', 'https://github.com/SahilKDas/KinokoDS'],
-  ['release', 'SahilKDas/Eloi', 'v4.0.1', 'https://github.com/SahilKDas/Eloi/releases/tag/v4.0.1'],
-  ['release', 'OpenShobu/Sekigahara', 'v0.4', 'https://github.com/OpenShobu/Sekigahara/releases/tag/v0.4'],
-  ['release', 'OpenShobu/cani', 'v0.2.0', 'https://github.com/OpenShobu/cani/releases/tag/v0.2.0']
-]
-
-const formatDate = (value: string) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value))
+const featuredNames = ['LFE-NNUE', 'Battle-Bound-DX', 'KinokoDS', 'Eloi']
+const featured = featuredNames.map(name => repos.find(repo => repo.name === name)).filter(Boolean)
+const horizonNames = ['Genseki', '64DS-DX', 'MK7-Native', 'Sekigahara']
+const horizons = horizonNames.map(name => repos.find(repo => repo.name === name)).filter(Boolean)
+const interests = ['Neural search', 'Reinforcement learning', 'Native reconstruction', 'Board-game engines', 'Vulkan graphics', 'Emulation', 'Language runtimes', 'Open protocols']
+const clean = (value: string) => value.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[`*_]/g, '')
+const date = (value: string) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value))
+const activitySeed = [
+  ['push', 'SahilKDas/LFE-NNUE', 'main'],
+  ['push', 'SahilKDas/Battle-Bound-DX', 'main'],
+  ['push', 'SahilKDas/KinokoDS', 'main'],
+  ['release', 'SahilKDas/Eloi', 'v4.0.1'],
+  ['push', 'OpenShobu/Sekigahara', 'main'],
+  ['push', 'OpenShobu/cani', 'main'],
+] as const
+const fallbackActivity = activitySeed.map(([kind, fullName, detail]) => ({ kind, repo: fullName, detail, timestamp: repos.find(repo => repo.fullName === fullName)?.updatedAt ?? '2026-11-08T00:00:00Z', href: `https://github.com/${fullName}` }))
+const imageWidths = [960, 1600, 2400]
 ---
 
 <!doctype html>
@@ -37,167 +40,132 @@ const formatDate = (value: string) => new Intl.DateTimeFormat('en-US', { month: 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#071424" />
-    <meta name="description" content="Sahil K. Das — neural engines, native runtimes, game systems, languages, and open infrastructure." />
-    <meta property="og:title" content="Sahil K. Das — Systems Desktop" />
-    <meta property="og:description" content="A living desktop for my systems, engines, organizations, interests, and public work." />
+    <meta name="theme-color" content="#02060b" />
+    <meta name="description" content="I’m Sahil K. Das. I build neural engines, native runtimes, game systems, languages, and open infrastructure." />
+    <meta property="og:title" content="Sahil K. Das — Systems Between Worlds" />
+    <meta property="og:description" content="A living systems atlas: engines, neural work, native reconstruction, organizations, and experiments." />
     <meta property="og:type" content="website" />
-    <title>Sahil K. Das — Systems Desktop</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2302060b'/%3E%3Cpath d='M14 42V22h17v6H21v3h9v6h-9v5h-7Zm20 0V22h7v8l7-8h8L45 32l12 10h-9l-7-7v7h-7Z' fill='%237bd9ff'/%3E%3C/svg%3E" />
+    <title>Sahil K. Das — Systems Between Worlds</title>
   </head>
   <body>
-    <a class="skip" href="#finder-window">Skip to project Finder</a>
-    <div class="desktop" data-desktop>
-      <div class="wallpaper" aria-hidden="true"><Image src={ocean} alt="" widths={[1280, 1920, 2560]} sizes="100vw" format="webp" quality={88} loading="eager" fetchpriority="high" /></div>
-      <div class="wallpaper-shade" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><div class="pointer-light" aria-hidden="true"></div>
+    <a class="skip-link" href="#atlas">Skip the cinematic introduction</a>
+    <div class="film-grain" aria-hidden="true"></div>
+    <div class="pointer-aura" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><i data-progress></i></div>
+    <div class="cinema-chrome" aria-hidden="true"><div class="letterbox letterbox-top"></div><div class="letterbox letterbox-bottom"></div><p class="scene-slate" data-scene-slate></p></div>
 
-      <header class="menu-bar glass">
-        <div class="menu-left"><button class="system-mark" type="button" data-open="about" aria-label="Open About">SK</button><strong data-active-app>Finder</strong><span>File</span><span>View</span><span>Window</span><span>Help</span></div>
-        <div class="menu-right"><span class="status-glyph" aria-hidden="true">⌁</span><span>52 personal repos</span><time data-clock></time></div>
-      </header>
+    <header class="topbar" data-topbar>
+      <a class="wordmark link-line" href="#top" aria-label="Sahil K. Das, home">Sahil K. Das</a>
+      <nav aria-label="Sections"><a class="link-line" href="#current">Current</a><a class="link-line" href="#activity">Activity</a><a class="link-line" href="#work">Archive</a><a class="link-line" href="#about">About</a></nav>
+      <a class="link-line top-github" href="https://github.com/SahilKDas" target="_blank" rel="noopener">GitHub ↗</a>
+    </header>
 
-      <div class="desktop-label"><span>SAHIL K. DAS</span><strong>Systems Desktop</strong><small>Open an app from the Dock</small></div>
-
-      <nav class="desktop-files" aria-label="External links">
-        <a href="https://github.com/SahilKDas" target="_blank" rel="noopener"><span class="file-icon">GH</span><strong>GitHub</strong></a>
-        <a href="https://github.com/OpenShobu" target="_blank" rel="noopener"><span class="file-icon network-file">OS</span><strong>OpenShobu</strong></a>
-        <a href="https://www.chess.com/member/sahildas34" target="_blank" rel="noopener"><span class="file-icon doc-file">♞</span><strong>Chess.com</strong></a>
-      </nav>
-
-      <section id="finder-window" class="window finder-window glass visible" data-window="finder" data-x="4" data-y="10" style="--x:4vw;--y:10vh;--z:10" aria-label="Projects Finder">
-        <header class="window-titlebar" data-drag-handle><div class="traffic"><button type="button" data-close aria-label="Close Finder"></button><button type="button" data-minimize aria-label="Minimize Finder"></button><i></i></div><strong>Projects</strong><span class="titlebar-view">▦</span></header>
-        <div class="finder-toolbar"><div class="history-buttons"><button type="button" aria-label="Back">‹</button><button type="button" aria-label="Forward">›</button></div><div class="finder-path"><span>SKD</span><i>›</i><strong>Public Work</strong></div><label class="search"><span>⌕</span><input type="search" placeholder="Search 53 projects" data-search /></label></div>
-        <div class="finder-body">
-          <aside class="finder-sidebar">
-            <p>Favorites</p>
-            {categories.map(category => <button type="button" class={category === 'All' ? 'active' : ''} data-category={category}><span class={`side-icon side-${category.toLowerCase()}`}></span><strong>{category === 'All' ? 'All Projects' : category}</strong><small>{counts[category]}</small></button>)}
-            <p>Locations</p>
-            <button type="button" data-owner="SahilKDas"><span class="side-icon side-personal"></span><strong>Personal</strong><small>{repos.filter(repo => repo.owner === 'SahilKDas').length}</small></button>
-            <button type="button" data-owner="OpenShobu"><span class="side-icon side-org"></span><strong>OpenShobu</strong><small>{repos.filter(repo => repo.owner === 'OpenShobu').length}</small></button>
-            <button type="button" data-owner="ReseraProject"><span class="side-icon side-org-alt"></span><strong>ReseraProject</strong><small>{repos.filter(repo => repo.owner === 'ReseraProject').length}</small></button>
-            <div class="sidebar-note"><strong>53 substantive repos</strong><span>Empty repositories and future markers are excluded.</span></div>
-          </aside>
-          <div class="repo-browser">
-            <div class="repo-columns"><span>Name</span><span>Kind</span><span>Modified</span></div>
-            <div class="repo-list" data-repo-list>
-              {repos.map((repo, index) => (
-                <button type="button" class={repo.name === featured.name ? 'selected' : ''} data-repo-index={index} data-name={repo.name.toLowerCase()} data-category={repo.category} data-owner={repo.owner}>
-                  <span class="repo-icon" style={`--repo-hue:${(index * 37) % 360}`}><i>{repo.name.slice(0, 1).toUpperCase()}</i></span>
-                  <span class="repo-name"><strong>{repo.name}</strong><small>{repo.owner}</small></span>
-                  <span class="repo-kind">{repo.category}</span><time datetime={repo.updatedAt}>{formatDate(repo.updatedAt)}</time>
-                </button>
-              ))}
-              <p class="no-results" data-no-results hidden>No projects match this view.</p>
-            </div>
+    <main id="top">
+      <section class="act-approach" data-approach data-scene="SC.01|THE APPROACH" aria-label="Sahil K. Das introduction">
+        <div class="scene-sticky">
+          <div class="portal-scene" aria-hidden="true">
+            <Image class="scene-layer portal-sky" src={portalSky} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={74} loading="eager" fetchpriority="high" />
+            <Image class="scene-layer portal-landscape" src={portalLandscape} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={76} loading="eager" />
+            <div class="portal-ocean"><Image src={fieldSky} alt="" widths={imageWidths} sizes="60vw" format="webp" quality={68} loading="eager" /></div>
+            <div class="world-effects"><div class="ambient-nebula"></div><div class="ambient-stars stars-a"></div><div class="ambient-stars stars-b"></div><div class="ambient-water"></div><div class="ambient-particles"></div></div>
+            <Image class="scene-layer portal-architecture" src={portalArchitecture} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={78} loading="eager" />
+            <Image class="scene-layer portal-foreground" src={portalForeground} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={78} loading="eager" />
+            <div class="portal-radiance"></div><div class="scene-vignette"></div><div class="scene-veil"></div>
           </div>
-          <aside class="detail-pane" data-detail>
-            <div class="detail-hero"><span class="detail-icon" data-detail-letter>{featured.name.slice(0, 1)}</span><p><small data-detail-owner>{featured.owner}</small><strong data-detail-name>{featured.name}</strong></p></div>
-            <p class="detail-description" data-detail-description>{featured.description}</p>
-            <dl><div><dt>Language</dt><dd data-detail-language>{featured.language}</dd></div><div><dt>Category</dt><dd data-detail-category>{featured.category}</dd></div><div><dt>Status</dt><dd data-detail-status>{featured.archived ? 'Archived' : featured.fork ? 'Active fork' : 'Active'}</dd></div><div><dt>Last push</dt><dd data-detail-date>{formatDate(featured.updatedAt)}</dd></div><div><dt>Size</dt><dd data-detail-size>{featured.sizeKb.toLocaleString()} KB</dd></div><div><dt>License</dt><dd data-detail-license>{featured.license}</dd></div></dl>
-            <div class="detail-topics" data-detail-topics>{featured.topics.length ? featured.topics.map(topic => <span>{topic}</span>) : <span>No published topics</span>}</div>
-            <a class="open-repo" data-detail-link href={featured.href} target="_blank" rel="noopener">Open on GitHub <span>↗</span></a>
-          </aside>
+          <div class="hero-copy">
+            <p class="hero-kicker">Independent R&amp;D · systems · intelligence</p>
+            <h1 aria-label="Sahil K. Das"><span class="mask-line"><span class="mask-word">SAHIL K.</span></span><span class="mask-line"><span class="mask-word outline">DAS</span></span></h1>
+            <p class="hero-intro">I build engines, runtimes, neural systems, and ambitious experiments to answer one useful question: <strong>what if?</strong></p>
+          </div>
+          <a class="scroll-cue" href="#crossing"><span>Enter the systems</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></a>
         </div>
-        <footer class="window-status"><span data-visible-count>{repos.length} items</span><span>Audited Nov 7, 2026</span></footer>
       </section>
 
-      <section class="window activity-window glass" data-window="activity" style="--x:18vw;--y:15vh;--z:9" aria-label="Public activity">
-        <header class="window-titlebar" data-drag-handle><div class="traffic"><button type="button" data-close aria-label="Close Activity"></button><button type="button" data-minimize aria-label="Minimize Activity"></button><i></i></div><strong>Activity Monitor</strong><span class="live-status"><i></i><span data-activity-source>Audited snapshot</span></span></header>
-        <div class="activity-summary"><div><small>ACCOUNT</small><strong>SahilKDas</strong></div><div><small>PUBLIC REPOS</small><strong>52</strong></div><div><small>OPENSHOBU</small><strong>Priority lane</strong></div></div>
-        <div class="activity-chart" aria-hidden="true"><svg viewBox="0 0 800 110" preserveAspectRatio="none"><path d="M0 82 C70 82 82 28 145 52 S230 88 295 45 S385 75 447 48 S545 68 610 30 S718 65 800 22" fill="none" stroke="currentColor" stroke-width="2"/><path d="M0 82 C70 82 82 28 145 52 S230 88 295 45 S385 75 447 48 S545 68 610 30 S718 65 800 22 V110 H0Z" fill="url(#fade)"/><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#6bd8ff" stop-opacity=".3"/><stop offset="1" stop-color="#6bd8ff" stop-opacity="0"/></linearGradient></defs></svg></div>
-        <div class="activity-table"><div class="activity-head"><span>Kind</span><span>Repository</span><span>Action</span><span>When</span></div><div data-activity-list>{fallbackActivity.map(item => <a href={item[3]} target="_blank" rel="noopener"><span>{item[0]}</span><strong>{item[1]}</strong><small>{item[2]}</small><time>snapshot</time></a>)}</div></div>
+      <section id="crossing" class="act-crossing" data-crossing data-scene="SC.02|THE CROSSING" aria-hidden="true"><div class="crossing-sticky"><canvas data-hyperspace></canvas><div class="crossing-white"></div><p class="crossing-label">Below the abstraction</p></div></section>
+
+      <section id="atlas" class="act-field" data-field data-scene="SC.03|THE SYSTEMS FIELD" aria-label="Systems atlas">
+        <div class="field-sticky">
+          <div class="field-stage" aria-hidden="true">
+            <Image class="field-layer field-sky" src={fieldSky} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={70} loading="lazy" />
+            <Image class="field-layer field-mist" src={fieldMist} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={68} loading="lazy" />
+            <Image class="field-layer field-flora" src={fieldFlora} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={70} loading="lazy" />
+            <canvas class="field-spores" data-spores></canvas>
+            <Image class="field-layer field-grass" src={fieldGrass} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={72} loading="lazy" />
+            <div class="field-scrim"></div>
+          </div>
+          <div class="field-content">
+            <p class="chapter-lede">A living atlas of things I build, question, break, and rebuild.</p>
+            <div class="atlas-title"><span>THE</span><strong>SYSTEMS</strong><span>FIELD</span></div>
+            <nav class="atlas-index" aria-label="Atlas destinations">
+              <a href="#current"><span>Current currents</span><small>Neural work and native reconstruction</small><i>01</i></a>
+              <a href="#activity"><span>Public signals</span><small>Activity, organizations, and collaboration</small><i>02</i></a>
+              <a href="#work"><span>Complete archive</span><small>Every substantive public repository</small><i>03</i></a>
+              <a href="#about"><span>Next horizon</span><small>DeepMind, open work, and difficult problems</small><i>04</i></a>
+            </nav>
+          </div>
+          <div class="field-veil" aria-hidden="true"></div>
+        </div>
       </section>
 
-      <section class="window org-window glass" data-window="organizations" style="--x:28vw;--y:17vh;--z:8" aria-label="Organizations">
-        <header class="window-titlebar" data-drag-handle><div class="traffic"><button type="button" data-close aria-label="Close Organizations"></button><button type="button" data-minimize aria-label="Minimize Organizations"></button><i></i></div><strong>Organizations</strong><span>2 spaces · 4 repositories</span></header>
-        <div class="org-content"><p class="window-intro">Collaboration is part of the work—not a footer afterthought.</p><a href="https://github.com/OpenShobu" target="_blank" rel="noopener" class="org-card"><span class="org-symbol">OS</span><div><small>ENGINE ECOSYSTEM</small><h2>OpenShobu</h2><p>I build and maintain open Shobu engines, a compact state SDK, and the Universal Shobu Protocol.</p><ul><li>Sekigahara</li><li>cani</li><li>Universal Shobu Protocol</li></ul></div><i>↗</i></a><a href="https://github.com/ReseraProject" target="_blank" rel="noopener" class="org-card"><span class="org-symbol alt">RP</span><div><small>PUBLIC ORGANIZATION</small><h2>ReseraProject</h2><p>My publicly listed GitHub organization and another place for shared web and research work.</p><ul><li>reseraproject.github.io</li></ul></div><i>↗</i></a></div>
+      <div class="paper-world" data-paper>
+        <section id="current" class="current-intro page-width">
+          <p class="eyebrow" data-reveal>01 · CURRENT CURRENTS</p>
+          <h2 data-reveal>THE WORK<br />IS ALIVE.</h2>
+          <div class="current-copy" data-reveal><p>Sometimes I ship in a day; sometimes I disappear into a month-long build.</p><p>Every repository is a laboratory. The work below is what’s moving now.</p></div>
+        </section>
+
+        <section class="project-film" data-project-film data-scene="SC.04|THE CURRENT" aria-label="Selected current projects">
+          <div class="project-stage">
+            <div class="project-counter"><span data-project-number>01</span><i></i><span>{String(featured.length).padStart(2, '0')}</span></div>
+            {featured.map((project, index) => project && (
+              <article class="project-frame" data-project-frame data-index={index}>
+                <div class="project-visual"><span class="project-orbit orbit-a"></span><span class="project-orbit orbit-b"></span><strong>{project.name.slice(0, 2).toUpperCase()}</strong><em>{project.language}</em></div>
+                <div class="project-copy"><p>{project.category} · {project.archived ? 'Archived' : project.fork ? 'Active fork' : 'Active'}</p><h3 class={`mask-line ${project.name === 'KinokoDS' ? 'title-compact' : ''}`}><span class="mask-word">{project.name}</span></h3><div><p>{clean(project.description)}</p><a href={project.href} target="_blank" rel="noopener">Open repository ↗</a></div></div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="horizons page-width">
+          <p class="eyebrow" data-reveal>02 · LONG HORIZON</p>
+          <div class="horizon-head" data-reveal><h2>FOUR SYSTEMS.<br />NO SMALL QUESTIONS.</h2><p>Priority work, long-term reconstruction, and an open engine ecosystem.</p></div>
+          <div class="horizon-list">
+            {horizons.map((project, index) => project && <a href={project.href} target="_blank" rel="noopener" data-reveal><span>{String(index + 1).padStart(2, '0')}</span><strong>{project.name}</strong><small>{project.language}</small><p>{clean(project.description)}</p><i>↗</i></a>)}
+          </div>
+        </section>
+
+        <section id="activity" class="signals page-width">
+          <div class="signals-head"><p class="eyebrow" data-reveal>03 · PUBLIC SIGNALS</p><h2 data-reveal>NOT A FEED.<br />A TRAIL.</h2><p data-reveal><i></i><span data-activity-source>Audited snapshot · Nov 8</span></p></div>
+          <div class="signals-grid">
+            <div class="activity-list" data-activity-list data-reveal>{fallbackActivity.map((item, index) => <a href={item.href} target="_blank" rel="noopener"><span>{String(index + 1).padStart(2, '0')}</span><small>{item.kind}</small><strong>{item.repo}</strong><em>{item.detail}</em><time datetime={item.timestamp}>{date(item.timestamp)}</time><i>↗</i></a>)}</div>
+            <aside class="organizations" data-reveal><p>Organizations</p><a href="https://github.com/OpenShobu" target="_blank" rel="noopener"><strong>OpenShobu</strong><span>Sekigahara, cani, and the Universal Shobu Protocol.</span><i>↗</i></a><a href="https://github.com/ReseraProject" target="_blank" rel="noopener"><strong>ReseraProject</strong><span>Shared research and web experiments.</span><i>↗</i></a><p>Interests</p><div>{interests.map(interest => <span>{interest}</span>)}</div></aside>
+          </div>
+        </section>
+
+        <section id="work" class="archive page-width">
+          <div class="archive-head"><p class="eyebrow" data-reveal>04 · COMPLETE PUBLIC INDEX</p><h2 data-reveal>EVERYTHING<br />SUBSTANTIVE.</h2><p data-reveal>{repos.length} repositories across my account and organizations. Empty repositories and explicit future markers stay out of the way.</p></div>
+          <div class="archive-tools" data-reveal><label><span>⌕</span><input type="search" aria-label="Search repositories" placeholder="Search names and descriptions" data-search /></label><div>{categories.map(category => <button type="button" class={category === 'All' ? 'active' : ''} data-filter={category}>{category}<span>{counts[category]}</span></button>)}</div></div>
+          <div class="repo-index" data-repo-index>
+            {repos.map((repo, index) => <details class="repo" data-repo data-name={`${repo.name} ${clean(repo.description)}`.toLowerCase()} data-category={repo.category}>
+              <summary><span>{String(index + 1).padStart(2, '0')}</span><strong>{repo.name}</strong><small>{repo.category}</small><small>{repo.language}</small><em>{repo.archived ? 'Archived' : repo.fork ? 'Fork' : 'Active'}</em><i>+</i></summary>
+              <div class="repo-detail"><p>{clean(repo.description)}</p><dl><div><dt>Owner</dt><dd>{repo.owner}</dd></div><div><dt>Last push</dt><dd>{date(repo.updatedAt)}</dd></div><div><dt>Size</dt><dd>{repo.sizeKb.toLocaleString()} KB</dd></div><div><dt>License</dt><dd>{repo.license}</dd></div></dl><div class="repo-topics">{repo.topics.length ? repo.topics.map(topic => <span>{topic}</span>) : <span>No published topics</span>}</div><a href={repo.href} target="_blank" rel="noopener">Open repository ↗</a></div>
+            </details>)}
+            <p class="no-results" data-no-results hidden>Nothing matches this view.</p>
+          </div>
+        </section>
+      </div>
+
+      <section id="about" class="act-abyss" data-abyss data-scene="SC.05|THE NEXT HORIZON" aria-label="About and contact">
+        <div class="abyss-sticky">
+          <div class="abyss-stage" aria-hidden="true"><Image class="abyss-deepfield" src={abyssDeepfield} alt="" widths={imageWidths} sizes="100vw" format="webp" quality={72} loading="lazy" /><Image class="abyss-disc" src={abyssDisc} alt="" widths={imageWidths} sizes="90vw" format="webp" quality={76} loading="lazy" /><div class="abyss-vignette"></div></div>
+          <div class="about-copy"><p class="eyebrow">05 · THE NEXT HORIZON</p><h2><span>I WILL APPLY TO</span><strong>GOOGLE<br />DEEPMIND.</strong></h2><div><p>I’m zooming in on neural systems, search, learning environments, and work that proves I can operate below the abstraction.</p><p>Open to work, research, collaborators, and difficult technical problems.</p></div></div>
+          <div class="contact-copy"><p>Have a hard problem?</p><h2 class="mask-line"><span class="mask-word">LET IT SURFACE.</span></h2><div><a href="https://github.com/SahilKDas" target="_blank" rel="noopener">GitHub ↗</a><a href="https://github.com/OpenShobu" target="_blank" rel="noopener">OpenShobu ↗</a><button type="button" data-copy>Discord · lordhank2</button></div></div>
+        </div>
       </section>
+    </main>
 
-      <section class="window interests-window glass" data-window="interests" style="--x:10vw;--y:18vh;--z:7" aria-label="Technical interests">
-        <header class="window-titlebar" data-drag-handle><div class="traffic"><button type="button" data-close aria-label="Close Interests"></button><button type="button" data-minimize aria-label="Minimize Interests"></button><i></i></div><strong>Interests</strong><span>What keeps pulling me back</span></header>
-        <div class="interest-content"><div class="interest-title"><small>CURRENT OBSESSIONS</small><h2>Below the<br />abstraction.</h2><p>I’m most interested in systems whose behavior has to be understood, measured, and rebuilt—not merely assembled.</p></div><div class="interest-list">{interests.map((interest, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{interest[0]}</h3><p>{interest[1]}</p></div></article>)}</div></div>
-      </section>
-
-      <section class="window about-window glass" data-window="about" style="--x:24vw;--y:13vh;--z:6" aria-label="About Sahil">
-        <header class="window-titlebar" data-drag-handle><div class="traffic"><button type="button" data-close aria-label="Close About"></button><button type="button" data-minimize aria-label="Minimize About"></button><i></i></div><strong>README — Sahil K. Das</strong><span>Plain text</span></header>
-        <div class="about-content"><div class="portrait-mark"><span>SKD</span><i></i></div><div><small>SOFTWARE ENGINEER · SYSTEMS ARCHITECT</small><h2>Restlessly curious.<br />Constantly building.</h2><p>I don’t stay in one lane. My GitHub is an active R&amp;D lab: languages, engines, games, infrastructure, and ambitious experiments built to answer “what if?”</p><p>Sometimes I ship in a day; sometimes I disappear into a month-long build. Every repository is a laboratory.</p><blockquote>I will apply to Google DeepMind. Until then, I’m building the evidence.</blockquote><div class="about-actions"><a href="https://github.com/SahilKDas" target="_blank" rel="noopener">GitHub ↗</a><button type="button" data-copy>Copy Discord</button><span data-copy-value>lordhank2</span></div></div></div>
-      </section>
-
-      <nav class="dock glass" aria-label="Applications" data-dock>
-        <button type="button" data-open="finder"><span class="dock-icon finder-icon"><i></i></span><small>Projects</small></button>
-        <button type="button" data-open="activity"><span class="dock-icon pulse-icon"><svg viewBox="0 0 50 50" aria-hidden="true"><path d="M5 28h9l5-14 8 25 6-18 4 7h8"/></svg></span><small>Activity</small></button>
-        <button type="button" data-open="organizations"><span class="dock-icon org-icon"><i></i><i></i><i></i></span><small>Organizations</small></button>
-        <button type="button" data-open="interests"><span class="dock-icon compass-icon"><i></i></span><small>Interests</small></button>
-        <button type="button" data-open="about"><span class="dock-icon readme-icon"><i>R</i></span><small>README</small></button>
-        <span class="dock-separator"></span>
-        <a href="https://github.com/SahilKDas" target="_blank" rel="noopener"><span class="dock-icon github-icon">GH</span><small>GitHub</small></a>
-      </nav>
-    </div>
-
-    <script id="repo-data" type="application/json" set:html={JSON.stringify(repos)}></script>
-    <script>
-      type Repo = { owner:string; name:string; fullName:string; description:string; language:string; category:string; topics:string[]; archived:boolean; fork:boolean; updatedAt:string; sizeKb:number; license:string; href:string }
-      const repoData = JSON.parse(document.querySelector('#repo-data')?.textContent || '[]') as Repo[]
-      const desktop = document.querySelector<HTMLElement>('[data-desktop]')
-      const windows = [...document.querySelectorAll<HTMLElement>('[data-window]')]
-      const appName = document.querySelector<HTMLElement>('[data-active-app]')
-      let topZ = 20
-
-      const appLabels: Record<string,string> = { finder:'Finder', activity:'Activity Monitor', organizations:'Organizations', interests:'Interests', about:'README' }
-      const focusWindow = (win: HTMLElement) => { topZ += 1; win.style.setProperty('--z', String(topZ)); appName && (appName.textContent = appLabels[win.dataset.window || ''] || 'Portfolio') }
-      const showWindow = (name: string) => { const win = document.querySelector<HTMLElement>(`[data-window="${name}"]`); if (!win) return; win.classList.remove('minimized'); win.classList.add('visible'); focusWindow(win) }
-      document.querySelectorAll<HTMLElement>('[data-open]').forEach(item => item.addEventListener('click', () => showWindow(item.dataset.open || 'finder')))
-      windows.forEach(win => {
-        win.addEventListener('pointerdown', () => focusWindow(win))
-        win.querySelector('[data-close]')?.addEventListener('click', event => { event.stopPropagation(); win.classList.remove('visible') })
-        win.querySelector('[data-minimize]')?.addEventListener('click', event => { event.stopPropagation(); win.classList.add('minimized'); setTimeout(() => win.classList.remove('visible'), 700) })
-      })
-
-      document.querySelectorAll<HTMLElement>('[data-drag-handle]').forEach(handle => {
-        const win = handle.closest<HTMLElement>('[data-window]'); if (!win) return
-        handle.addEventListener('pointerdown', event => {
-          if (matchMedia('(max-width: 760px)').matches || (event.target as HTMLElement).closest('button')) return
-          event.preventDefault(); focusWindow(win); handle.setPointerCapture(event.pointerId)
-          const rect = win.getBoundingClientRect(); const startX = event.clientX; const startY = event.clientY
-          const move = (next: PointerEvent) => { const x = Math.max(8, Math.min(innerWidth - rect.width - 8, rect.left + next.clientX - startX)); const y = Math.max(36, Math.min(innerHeight - 80, rect.top + next.clientY - startY)); win.style.setProperty('--x', `${x}px`); win.style.setProperty('--y', `${y}px`) }
-          const up = () => { handle.removeEventListener('pointermove', move); handle.removeEventListener('pointerup', up) }
-          handle.addEventListener('pointermove', move); handle.addEventListener('pointerup', up)
-        })
-      })
-
-      const dockItems = [...document.querySelectorAll<HTMLElement>('[data-dock] > button, [data-dock] > a')]
-      document.querySelector('[data-dock]')?.addEventListener('pointermove', event => dockItems.forEach(item => { const rect = item.getBoundingClientRect(); const distance = Math.abs(event.clientX - (rect.left + rect.width / 2)); const scale = 1 + Math.max(0, 1 - distance / 100) * .42; item.style.setProperty('--dock-scale', String(scale)) }))
-      document.querySelector('[data-dock]')?.addEventListener('pointerleave', () => dockItems.forEach(item => item.style.setProperty('--dock-scale', '1')))
-
-      const rows = [...document.querySelectorAll<HTMLButtonElement>('[data-repo-index]')]
-      const setText = (selector:string,value:string) => { const node=document.querySelector(selector); if(node) node.textContent=value }
-      const formatDate = (value:string) => new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(value))
-      const selectRepo = (index:number) => {
-        const repo=repoData[index]; if(!repo) return
-        rows.forEach(row => row.classList.toggle('selected', Number(row.dataset.repoIndex)===index))
-        setText('[data-detail-letter]',repo.name.slice(0,1).toUpperCase()); setText('[data-detail-owner]',repo.owner); setText('[data-detail-name]',repo.name); setText('[data-detail-description]',repo.description); setText('[data-detail-language]',repo.language); setText('[data-detail-category]',repo.category); setText('[data-detail-status]',repo.archived?'Archived':repo.fork?'Active fork':'Active'); setText('[data-detail-date]',formatDate(repo.updatedAt)); setText('[data-detail-size]',`${repo.sizeKb.toLocaleString()} KB`); setText('[data-detail-license]',repo.license)
-        const topics=document.querySelector('[data-detail-topics]'); if(topics) topics.replaceChildren(...(repo.topics.length?repo.topics:['No published topics']).map(topic=>{const span=document.createElement('span');span.textContent=topic;return span}))
-        const link=document.querySelector<HTMLAnchorElement>('[data-detail-link]'); if(link) link.href=repo.href
-      }
-      rows.forEach(row => row.addEventListener('click',()=>selectRepo(Number(row.dataset.repoIndex))))
-
-      let category='All',owner='all',query=''
-      const filterRows=()=>{let count=0;rows.forEach(row=>{const visible=(category==='All'||row.dataset.category===category)&&(owner==='all'||row.dataset.owner===owner)&&(row.dataset.name||'').includes(query);row.hidden=!visible;if(visible)count+=1});setText('[data-visible-count]',`${count} items`);document.querySelector<HTMLElement>('[data-no-results]')!.hidden=count>0}
-      document.querySelectorAll<HTMLButtonElement>('[data-category]').forEach(button=>button.addEventListener('click',()=>{category=button.dataset.category||'All';owner='all';document.querySelectorAll('.finder-sidebar button').forEach(item=>item.classList.toggle('active',item===button));filterRows()}))
-      document.querySelectorAll<HTMLButtonElement>('[data-owner]').forEach(button=>button.addEventListener('click',()=>{owner=button.dataset.owner||'all';category='All';document.querySelectorAll('.finder-sidebar button').forEach(item=>item.classList.toggle('active',item===button));filterRows()}))
-      document.querySelector<HTMLInputElement>('[data-search]')?.addEventListener('input',event=>{query=(event.currentTarget as HTMLInputElement).value.toLowerCase().trim();filterRows()})
-
-      const updateClock=()=>{const now=new Date();const clock=document.querySelector('time[data-clock]');if(clock){clock.dateTime=now.toISOString();clock.textContent=new Intl.DateTimeFormat('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(now)}};updateClock();setInterval(updateClock,30000)
-
-      let pointerFrame=0;window.addEventListener('pointermove',event=>{if(!desktop||!matchMedia('(pointer:fine)').matches)return;cancelAnimationFrame(pointerFrame);pointerFrame=requestAnimationFrame(()=>{desktop.style.setProperty('--pointer-x',`${event.clientX}px`);desktop.style.setProperty('--pointer-y',`${event.clientY}px`)})},{passive:true})
-      document.querySelector<HTMLButtonElement>('[data-copy]')?.addEventListener('click',async event=>{const button=event.currentTarget as HTMLButtonElement;try{await navigator.clipboard.writeText('lordhank2');button.textContent='Copied';setTimeout(()=>button.textContent='Copy Discord',1600)}catch{button.textContent='lordhank2'}})
-
-      const safeUrl=(value:string)=>{try{const url=new URL(value);return url.protocol==='https:'&&url.hostname==='github.com'?url.toString():'https://github.com/SahilKDas'}catch{return'https://github.com/SahilKDas'}}
-      const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),5000)
-      Promise.all([fetch('https://api.github.com/users/SahilKDas/events/public?per_page=30',{signal:controller.signal}).then(r=>r.ok?r.json():Promise.reject()),fetch('https://api.github.com/orgs/OpenShobu/events?per_page=30',{signal:controller.signal}).then(r=>r.ok?r.json():Promise.reject())]).then(([personal,org])=>{
-        const events=[...(Array.isArray(personal)?personal:[]),...(Array.isArray(org)?org:[])].filter(event=>['PushEvent','ReleaseEvent','CreateEvent','PullRequestEvent'].includes(event?.type)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).filter((event,index,all)=>all.findIndex(item=>item.id===event.id)===index).slice(0,12)
-        const list=document.querySelector('[data-activity-list]');if(!list||!events.length)return
-        list.replaceChildren(...events.map(event=>{const repo=String(event.repo?.name||'Repository');const kind=event.type.replace('Event','').replace('PullRequest','pull request').toLowerCase();const action=event.type==='PushEvent'?String(event.payload?.ref||'main').replace('refs/heads/',''):event.type==='ReleaseEvent'?String(event.payload?.release?.tag_name||'release'):String(event.payload?.action||event.payload?.ref_type||'updated');const link=document.createElement('a');link.href=safeUrl(`https://github.com/${repo}`);link.target='_blank';link.rel='noopener';for(const[tag,text]of[['span',kind],['strong',repo],['small',action],['time',formatDate(event.created_at)]]as const){const node=document.createElement(tag);node.textContent=text;link.append(node)}return link}));setText('[data-activity-source]','Live GitHub')
-      }).catch(()=>{}).finally(()=>clearTimeout(timeout))
-    </script>
+    <footer><span>© {new Date().getFullYear()} Sahil K. Das</span><span>Systems between worlds</span><a href="#top">Back to the approach ↑</a></footer>
+    <script src="../scripts/cinema.ts"></script>
   </body>
 </html>
