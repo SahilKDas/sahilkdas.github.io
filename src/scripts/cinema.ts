@@ -141,14 +141,6 @@ if (projectFilm && frames.length && cinema) {
 const cinematicCards = gsap.utils.toArray<HTMLElement>('[data-cinematic-card]')
 const cardMotion = !reducedMotion && (memory === undefined || memory >= 2)
 if (cinematicCards.length && cardMotion) {
-  const clipEntrances = [
-    'inset(13% 0% 0% 10%)',
-    'inset(0% 12% 14% 0%)',
-    'inset(16% 7% 0% 0%)',
-    'inset(0% 0% 12% 11%)',
-    'inset(8% 9% 8% 9%)',
-    'inset(15% 0% 5% 0%)',
-  ]
   const mobile = innerWidth <= 820
   cinematicCards.forEach((card, index) => {
     const visual = card.querySelector<HTMLElement>('[data-card-visual]')
@@ -158,12 +150,13 @@ if (cinematicCards.length && cardMotion) {
     const copy = card.querySelector<HTMLElement>('.repo-card-copy,.organization-copy')
     const glyphScale = Number.parseFloat(card.style.getPropertyValue('--card-glyph')) || 1
     const direction = index % 2 ? -1 : 1
-    const rise = mobile ? 28 + (index * 5) % 13 : 58 + (index * 11) % 47
-    const drift = mobile ? 8 + (index * 3) % 7 : 20 + (index * 13) % 30
+    const slide = mobile ? 6 + (index * 3) % 5 : 10 + (index * 5) % 10
     const turn = direction * (.25 + ((index * 7) % 9) * .09)
     const glyphTurn = direction * (2 + (index * 11) % 9)
     const glyphX = direction * (5 + (index * 17) % 13)
     const motifTurn = direction * (14 + (index * 19) % 38)
+    const enterClip = direction > 0 ? `inset(0% ${8 + index % 8}% 0% 0%)` : `inset(0% 0% 0% ${8 + index % 8}%)`
+    const exitClip = direction > 0 ? `inset(0% 0% 0% ${3 + index % 5}%)` : `inset(0% ${3 + index % 5}% 0% 0%)`
     const timeline = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
@@ -176,12 +169,14 @@ if (cinematicCards.length && cardMotion) {
         onToggle: self => card.classList.toggle('card-active', self.isActive),
       },
     })
-    timeline.fromTo(card, { y: rise, scale: mobile ? .985 : .955, rotateZ: turn }, { y: -drift, scale: 1, rotateZ: 0, duration: 1 }, 0)
-    if (visual) timeline.fromTo(visual, { clipPath: mobile ? 'inset(5% 0% 5% 0%)' : clipEntrances[index % clipEntrances.length], scale: 1.06 + (index % 4) * .012 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: .985, duration: 1 }, 0)
-    if (glyph) timeline.fromTo(glyph, { xPercent: glyphX, yPercent: direction * -5, rotation: glyphTurn, scale: glyphScale * .9 }, { xPercent: -glyphX * .22, yPercent: direction * 3, rotation: -glyphTurn * .16, scale: glyphScale * 1.035, duration: 1 }, 0)
+    timeline
+      .fromTo(card, { xPercent: direction * slide, y: 0, scale: mobile ? .985 : .955, rotateZ: turn }, { xPercent: 0, y: 0, scale: 1, rotateZ: 0, duration: .56 }, 0)
+      .to(card, { xPercent: -direction * slide * .42, y: 0, scale: mobile ? .992 : .982, rotateZ: -turn * .28, duration: .44 }, .56)
+    if (visual) timeline.fromTo(visual, { clipPath: enterClip, scale: 1.06 + (index % 4) * .012 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: .56 }, 0).to(visual, { clipPath: exitClip, scale: .985, duration: .44 }, .56)
+    if (glyph) timeline.fromTo(glyph, { xPercent: glyphX, yPercent: 0, rotation: glyphTurn, scale: glyphScale * .9 }, { xPercent: 0, yPercent: 0, rotation: 0, scale: glyphScale, duration: .56 }, 0).to(glyph, { xPercent: -glyphX * .36, yPercent: 0, rotation: -glyphTurn * .16, scale: glyphScale * 1.035, duration: .44 }, .56)
     if (motif) timeline.fromTo(motif, { rotation: motifTurn, scale: .82 + (index % 5) * .025, opacity: .18 }, { rotation: -motifTurn * .35, scale: 1.08 + (index % 3) * .035, opacity: .68, duration: 1 }, 0)
-    if (grid) timeline.fromTo(grid, { xPercent: direction * -4, yPercent: 5 }, { xPercent: direction * 4, yPercent: -5, duration: 1 }, 0)
-    if (copy) timeline.fromTo(copy.children, { y: 20 + (index % 4) * 6, opacity: .46 }, { y: 0, opacity: 1, duration: .62, stagger: .035 }, .08)
+    if (grid) timeline.fromTo(grid, { xPercent: direction * -6, yPercent: 0 }, { xPercent: direction * 6, yPercent: 0, duration: 1 }, 0)
+    if (copy) timeline.fromTo(copy.children, { x: direction * (24 + (index % 4) * 8), y: 0, opacity: .46 }, { x: 0, y: 0, opacity: 1, duration: .56, stagger: .035 }, .04)
   })
 }
 
