@@ -21,6 +21,10 @@ const featured = featuredNames.map(name => repos.find(repo => repo.name === name
 const horizonNames = ['Genseki', '64DS-DX', 'MK7-Native', 'Sekigahara']
 const horizons = horizonNames.map(name => repos.find(repo => repo.name === name)).filter(Boolean)
 const interests = ['Neural search', 'Reinforcement learning', 'Native reconstruction', 'Board-game engines', 'Vulkan graphics', 'Emulation', 'Language runtimes', 'Open protocols']
+const organizations = [
+  { name: 'OpenShobu', mark: 'OS', href: 'https://github.com/OpenShobu', description: 'An open engine ecosystem for Shobu: handcrafted bots, a Rust SDK, and the Universal Shobu Protocol.', focus: 'Protocols · engines · community' },
+  { name: 'ReseraProject', mark: 'RP', href: 'https://github.com/ReseraProject', description: 'A shared home for research-minded web experiments and collaborative systems work.', focus: 'Research · web · experiments' },
+].map(organization => ({ ...organization, repositories: repos.filter(repo => repo.owner === organization.name).length }))
 const clean = (value: string) => value.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[`*_]/g, '')
 const date = (value: string) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value))
 const activitySeed = [
@@ -139,18 +143,28 @@ const imageWidths = [960, 1600, 2400]
           <div class="signals-head"><p class="eyebrow" data-reveal>03 · PUBLIC SIGNALS</p><h2 data-reveal>NOT A FEED.<br />A TRAIL.</h2><p data-reveal><i></i><span data-activity-source>Audited snapshot · Nov 8</span></p></div>
           <div class="signals-grid">
             <div class="activity-list" data-activity-list data-reveal>{fallbackActivity.map((item, index) => <a href={item.href} target="_blank" rel="noopener"><span>{String(index + 1).padStart(2, '0')}</span><small>{item.kind}</small><strong>{item.repo}</strong><em>{item.detail}</em><time datetime={item.timestamp}>{date(item.timestamp)}</time><i>↗</i></a>)}</div>
-            <aside class="organizations" data-reveal><p>Organizations</p><a href="https://github.com/OpenShobu" target="_blank" rel="noopener"><strong>OpenShobu</strong><span>Sekigahara, cani, and the Universal Shobu Protocol.</span><i>↗</i></a><a href="https://github.com/ReseraProject" target="_blank" rel="noopener"><strong>ReseraProject</strong><span>Shared research and web experiments.</span><i>↗</i></a><p>Interests</p><div>{interests.map(interest => <span>{interest}</span>)}</div></aside>
+            <aside class="interests" data-reveal><p>Active interests</p><div>{interests.map(interest => <span>{interest}</span>)}</div><p class="interest-note">Neural systems are the current center of gravity. The rest keeps the lab unpredictable.</p></aside>
+          </div>
+        </section>
+
+        <section class="organization-atlas page-width" aria-labelledby="organization-title">
+          <div class="organization-head"><p class="eyebrow" data-reveal>04 · ORGANIZATIONS</p><h2 id="organization-title" data-reveal>BUILT<br />TOGETHER.</h2><p data-reveal>Every public organization, presented as part of the work—not tucked into a footer.</p></div>
+          <div class="organization-gallery">
+            {organizations.map((organization, index) => <a class="organization-card" href={organization.href} target="_blank" rel="noopener" style={`--organization-index:${index};--organization-hue:${index ? 172 : 198}`}>
+              <div class="organization-visual" aria-hidden="true"><span class="organization-orbit orbit-a"></span><span class="organization-orbit orbit-b"></span><strong>{organization.mark}</strong><small>{String(index + 1).padStart(2, '0')}</small></div>
+              <div class="organization-copy"><p>{organization.focus}</p><h3 class:list={{ 'organization-title-long': organization.name.length > 10 }}>{organization.name}</h3><div><p>{organization.description}</p><dl><div><dt>Portfolio repositories</dt><dd>{organization.repositories}</dd></div><div><dt>Role</dt><dd>Builder · collaborator</dd></div></dl><span>Open organization ↗</span></div></div>
+            </a>)}
           </div>
         </section>
 
         <section id="work" class="archive page-width">
-          <div class="archive-head"><p class="eyebrow" data-reveal>04 · COMPLETE PUBLIC INDEX</p><h2 data-reveal>EVERYTHING<br />SUBSTANTIVE.</h2><p data-reveal>{repos.length} repositories across my account and organizations. Empty repositories and explicit future markers stay out of the way.</p></div>
+          <div class="archive-head"><p class="eyebrow" data-reveal>05 · COMPLETE PUBLIC ATLAS</p><h2 data-reveal>EVERYTHING<br />SUBSTANTIVE.</h2><p data-reveal>{repos.length} repositories across my account and organizations. Every one gets room to exist; empty repositories and explicit future markers stay out of the way.</p></div>
           <div class="archive-tools" data-reveal><label><span>⌕</span><input type="search" aria-label="Search repositories" placeholder="Search names and descriptions" data-search /></label><div>{categories.map(category => <button type="button" class={category === 'All' ? 'active' : ''} data-filter={category}>{category}<span>{counts[category]}</span></button>)}</div></div>
-          <div class="repo-index" data-repo-index>
-            {repos.map((repo, index) => <details class="repo" data-repo data-name={`${repo.name} ${clean(repo.description)}`.toLowerCase()} data-category={repo.category}>
-              <summary><span>{String(index + 1).padStart(2, '0')}</span><strong>{repo.name}</strong><small>{repo.category}</small><small>{repo.language}</small><em>{repo.archived ? 'Archived' : repo.fork ? 'Fork' : 'Active'}</em><i>+</i></summary>
-              <div class="repo-detail"><p>{clean(repo.description)}</p><dl><div><dt>Owner</dt><dd>{repo.owner}</dd></div><div><dt>Last push</dt><dd>{date(repo.updatedAt)}</dd></div><div><dt>Size</dt><dd>{repo.sizeKb.toLocaleString()} KB</dd></div><div><dt>License</dt><dd>{repo.license}</dd></div></dl><div class="repo-topics">{repo.topics.length ? repo.topics.map(topic => <span>{topic}</span>) : <span>No published topics</span>}</div><a href={repo.href} target="_blank" rel="noopener">Open repository ↗</a></div>
-            </details>)}
+          <div class="repo-gallery" data-repo-index>
+            {repos.map((repo, index) => <article class="repo-card" data-repo data-name={`${repo.name} ${clean(repo.description)} ${repo.owner} ${repo.language} ${repo.topics.join(' ')}`.toLowerCase()} data-category={repo.category} style={`--repo-hue:${186 + (index * 23) % 76};--repo-index:${index}`}>
+              <div class="repo-card-visual" aria-hidden="true"><span class="repo-card-grid"></span><span class="repo-card-orbit orbit-a"></span><span class="repo-card-orbit orbit-b"></span><strong>{repo.name.slice(0, 2).toUpperCase()}</strong><small>{String(index + 1).padStart(2, '0')} / {String(repos.length).padStart(2, '0')}</small><em>{repo.language}</em></div>
+              <div class="repo-card-copy"><p><span>{repo.category}</span><i></i><span>{repo.archived ? 'Archived' : repo.fork ? 'Active fork' : 'Active'}</span></p><h3 class:list={['repo-title', { 'repo-title-medium': repo.name.length > 11, 'repo-title-long': repo.name.length > 18 }]}>{repo.name}</h3><div class="repo-card-body"><p>{clean(repo.description)}</p><dl><div><dt>Owner</dt><dd>{repo.owner}</dd></div><div><dt>Last push</dt><dd>{date(repo.updatedAt)}</dd></div><div><dt>Language</dt><dd>{repo.language}</dd></div><div><dt>License</dt><dd>{repo.license}</dd></div><div><dt>Size</dt><dd>{repo.sizeKb.toLocaleString()} KB</dd></div></dl><div class="repo-topics">{repo.topics.length ? repo.topics.map(topic => <span>{topic}</span>) : <span>No published topics</span>}</div><a href={repo.href} target="_blank" rel="noopener">Open repository ↗</a></div></div>
+            </article>)}
             <p class="no-results" data-no-results hidden>Nothing matches this view.</p>
           </div>
         </section>
