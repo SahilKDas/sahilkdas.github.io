@@ -10,8 +10,10 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
 const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
 const cinema = !reducedMotion && innerWidth > 820 && (memory === undefined || memory >= 4)
 const slate = document.querySelector<HTMLElement>('[data-scene-slate]')
+const scrollCue = document.querySelector<HTMLAnchorElement>('.scroll-cue')
 
 if (cinema) root.dataset.cinema = 'on'
+if (scrollCue && innerWidth <= 820) scrollCue.href = '#atlas'
 
 let lenis: Lenis | undefined
 if (!reducedMotion && innerWidth > 820) {
@@ -150,7 +152,7 @@ if (cinematicCards.length && cardMotion) {
     const copy = card.querySelector<HTMLElement>('.repo-card-copy,.organization-copy')
     const glyphScale = Number.parseFloat(card.style.getPropertyValue('--card-glyph')) || 1
     const direction = index % 2 ? -1 : 1
-    const slide = mobile ? 6 + (index * 3) % 5 : 10 + (index * 5) % 10
+    const slide = mobile ? 3 + (index * 2) % 3 : 10 + (index * 5) % 10
     const turn = direction * (.25 + ((index * 7) % 9) * .09)
     const glyphTurn = direction * (2 + (index * 11) % 9)
     const glyphX = direction * (5 + (index * 17) % 13)
